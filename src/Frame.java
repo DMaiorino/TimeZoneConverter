@@ -16,7 +16,7 @@ public class Frame extends JFrame {
 
     public void setup(String title){
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(400,150));
+        setMinimumSize(new Dimension(400,250));
         setVisible(true);
         setTitle(title);
     }
