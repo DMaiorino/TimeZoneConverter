@@ -30,6 +30,7 @@ public class GUI {
     //New Components
     JComboBox newTimezoneBox;
     JLabel newLabel;
+    JLabel newDateLabel;
     JLabel newTimeLabel;
 
     //Time Info
@@ -78,11 +79,14 @@ public class GUI {
         c.gridy = 1;
         mainPanel.add(newTimezoneBox, c);
 
+        newDateLabel = new JLabel("Sun 01/01/1970", SwingConstants.CENTER);
+        newDateLabel.setFont(new Font("Times New Roman", 0, 24));
+        c.gridy = 2;
+        mainPanel.add(newDateLabel, c);
 
         newTimeLabel = new JLabel("00:00", SwingConstants.CENTER);
-        newTimeLabel.setFont(new Font("Times New Roman", 0, 42));
-        c.gridheight = 2;
-        c.gridy = 2;
+        newTimeLabel.setFont(new Font("Times New Roman", 0, 24));
+        c.gridy = 3;
         mainPanel.add(newTimeLabel, c);
 
         //Add bottom button
