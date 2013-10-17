@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import org.jdesktop.swingx.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -94,6 +96,7 @@ public class GUI {
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 4;
+        button.addActionListener(new converter());
         mainPanel.add(button, c);
 
 
@@ -104,6 +107,13 @@ public class GUI {
 
     }
 
+    public class converter implements ActionListener{
+
+        public void actionPerformed(ActionEvent a){
+            newDateLabel.setText(baseDatePicker.getDate().toString());
+            newTimeLabel.setText(baseTimeSpinner.getValue().toString());
+        }
+    }
 
 
 }
