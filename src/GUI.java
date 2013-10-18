@@ -2,7 +2,10 @@ import javax.swing.*;
 import java.awt.*;
 import org.jdesktop.swingx.*;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.TimeZone;
 
 /**
@@ -36,6 +39,7 @@ public class GUI {
     //Time Info
     String currentTZ = Calendar.getInstance().getTimeZone().getID();
     String[] timezoneList = {"Africa/Algiers", "Africa/Cairo", "Africa/Casablanca", "Africa/Harare", "Africa/Nairobi", "Africa/Windhoek", "America/Bogota", "America/Buenos_Aires", "America/Caracas", "America/Chihuahua", "America/Guatemala", "America/Mexico_City", "America/Montevideo", "America/Santiago", "America/Tijuana", "Asia/Amman", "Asia/Baghdad", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Calcutta", "Asia/Colombo", "Asia/Dhaka", "Asia/Hong_Kong", "Asia/Irkutsk", "Asia/Jerusalem", "Asia/Kabul", "Asia/Karachi", "Asia/Katmandu", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuwait", "Asia/Magadan", "Asia/Muscat", "Asia/Novosibirsk", "Asia/Rangoon", "Asia/Seoul", "Asia/Taipei", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tokyo", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Cape_Verde", "Australia/Adelaide", "Australia/Brisbane", "Australia/Darwin", "Australia/Hobart", "Australia/Perth", "Australia/Sydney", "Brazil/East", "Canada/Eastern", "Canada/Newfoundland", "Canada/Saskatchewan", "Europe/Athens", "Europe/Belgrade", "Europe/Berlin", "Europe/Brussels", "Europe/Helsinki", "Europe/London", "Europe/Minsk", "Europe/Moscow", "Europe/Paris", "Europe/Warsaw", "Pacific/Auckland", "Pacific/Fiji", "Pacific/Guam", "Pacific/Midway", "US/Alaska", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Mountain", "US/Pacific", "UTC"} ;
+
 
     public void start(){
 
@@ -94,6 +98,7 @@ public class GUI {
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 4;
+        button.addActionListener(new converter());
         mainPanel.add(button, c);
 
 
@@ -101,6 +106,34 @@ public class GUI {
         frame = new Frame("Timezone Converter");
         frame.getContentPane().add(mainPanel);
         frame.pack();
+    }
+
+    public class converter implements ActionListener{
+
+
+        public void actionPerformed(ActionEvent a){
+
+            Conversion theConverter = new Conversion();
+
+            // Splitting action to get hour and minute from the Spinner
+            String[] fullTime = baseTimeSpinner.getValue().toString().split(" ");
+            String[] baseTime = fullTime[3].toString().split(":");
+            Integer baseHour = Integer.parseInt(baseTime[0]);
+            Integer baseMinute = Integer.parseInt(baseTime[1]);
+
+
+            // Set the base date, which will be converted to the new time
+            Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone(baseTimezoneBox.getSelectedItem().toString()));
+            baseDate.set(2013, Calendar.OCTOBER, 31, baseHour, baseMinute);
+
+            // Make Conversion Calls Here
+            Calendar newDate = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
+
+            //Set the new time label
+            Integer hour = newDate.get(Calendar.HOUR_OF_DAY);
+            Integer minute = newDate.get(Calendar.MINUTE);
+            newTimeLabel.setText(hour.toString() + ":" + minute.toString());
+        }
 
     }
 
