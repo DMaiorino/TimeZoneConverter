@@ -138,8 +138,16 @@ public class GUI {
 
             //Set the new time label
             Integer hour = newTime.get(Calendar.HOUR_OF_DAY);
-            Integer minute = newTime.get(Calendar.MINUTE);
+            Integer numMinute = newTime.get(Calendar.MINUTE);
+
+            //Since minute may return a single digit, add a 0 if it is single.
+            String minute = numMinute.toString();
+            if (minute.length() == 1){
+                minute = "0" + minute ;
+            }
+
             newTimeLabel.setText(hour.toString() + ":" + minute.toString());
+
 
             //Set the new date label
             Integer day = newTime.get(Calendar.DAY_OF_MONTH);
@@ -147,6 +155,7 @@ public class GUI {
             String nameDayOfWeek = theConverter.getDayOfWeekName(dayOfWeek);
             Integer month = newTime.get(Calendar.MONTH) + 1; //Add one as months start with 0
             Integer year = newTime.get(Calendar.YEAR);
+
             newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
 
         }
