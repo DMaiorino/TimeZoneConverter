@@ -15,6 +15,7 @@ import java.util.TimeZone;
  * Time: 5:45 PM
  * A simple app for converting time.
  */
+
 public class GUI {
 
     // Need to classify
@@ -121,18 +122,32 @@ public class GUI {
             Integer baseHour = Integer.parseInt(baseTime[0]);
             Integer baseMinute = Integer.parseInt(baseTime[1]);
 
+            // Splitting action to get month, day, and year.
+            String[] fullDate = baseDatePicker.getDate().toString().split(" ");
+            Integer baseYear = Integer.parseInt(fullDate[5]);
+            Integer baseDay = Integer.parseInt(fullDate[2]);
+            Integer baseMonth = baseDatePicker.getDate().getMonth(); //Have to return a int, using deprecated date method :(
 
             // Set the base date, which will be converted to the new time
             Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone(baseTimezoneBox.getSelectedItem().toString()));
-            baseDate.set(2013, Calendar.OCTOBER, 31, baseHour, baseMinute);
+            baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
 
             // Make Conversion Calls Here
-            Calendar newDate = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
+            Calendar newTime = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
 
             //Set the new time label
-            Integer hour = newDate.get(Calendar.HOUR_OF_DAY);
-            Integer minute = newDate.get(Calendar.MINUTE);
+            Integer hour = newTime.get(Calendar.HOUR_OF_DAY);
+            Integer minute = newTime.get(Calendar.MINUTE);
             newTimeLabel.setText(hour.toString() + ":" + minute.toString());
+
+            //Set the new date label
+            Integer day = newTime.get(Calendar.DAY_OF_MONTH);
+            Integer dayOfWeek = newTime.get(Calendar.DAY_OF_WEEK);
+            String nameDayOfWeek = theConverter.getDayOfWeekName(dayOfWeek);
+            Integer month = newTime.get(Calendar.MONTH) + 1; //Add one as months start with 0
+            Integer year = newTime.get(Calendar.YEAR);
+            newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
+
         }
 
     }
