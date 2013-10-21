@@ -64,6 +64,7 @@ public class GUI {
         mainPanel.add(baseTimezoneBox, c);
 
         baseDatePicker = new JXDatePicker();
+        baseDatePicker.setDate(Calendar.getInstance().getTime());
         c.gridy = 2;
         mainPanel.add(baseDatePicker, c);
 
