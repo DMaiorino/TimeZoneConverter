@@ -100,68 +100,72 @@ public class GUI {
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 4;
-        button.addActionListener(new converter());
+        button.addActionListener(new converterAction());
         mainPanel.add(button, c);
-
 
         //Setup the Frame
         frame = new Frame("Timezone Converter");
         frame.getContentPane().add(mainPanel);
         frame.pack();
+
+        //Update the new time once (Currently set to UTC
+        convertTime();
+
     }
 
-    public class converter implements ActionListener{
 
+    public void convertTime(){
+
+        Conversion theConverter = new Conversion();
+
+        // Splitting action to get hour and minute from the Spinner
+        String[] fullTime = baseTimeSpinner.getValue().toString().split(" ");
+        String[] baseTime = fullTime[3].toString().split(":");
+        Integer baseHour = Integer.parseInt(baseTime[0]);
+        Integer baseMinute = Integer.parseInt(baseTime[1]);
+
+        // Splitting action to get month, day, and year.
+        String[] fullDate = baseDatePicker.getDate().toString().split(" ");
+        Integer baseYear = Integer.parseInt(fullDate[5]);
+        Integer baseDay = Integer.parseInt(fullDate[2]);
+        Integer baseMonth = baseDatePicker.getDate().getMonth(); //Have to return a int, using deprecated date method :(
+
+        // Set the base date, which will be converted to the new time
+        Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone(baseTimezoneBox.getSelectedItem().toString()));
+        baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
+
+        // Make Conversion Calls Here
+        Calendar newTime = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
+
+        //Set the new time label
+        Integer hour = newTime.get(Calendar.HOUR_OF_DAY);
+        Integer numMinute = newTime.get(Calendar.MINUTE);
+
+        //Since minute may return a single digit, add a 0 if it is single.
+        String minute = numMinute.toString();
+        if (minute.length() == 1){
+            minute = "0" + minute ;
+        }
+
+        newTimeLabel.setText(hour.toString() + ":" + minute.toString());
+
+
+        //Set the new date label
+        Integer day = newTime.get(Calendar.DAY_OF_MONTH);
+        Integer dayOfWeek = newTime.get(Calendar.DAY_OF_WEEK);
+        String nameDayOfWeek = theConverter.getDayOfWeekName(dayOfWeek);
+        Integer month = newTime.get(Calendar.MONTH) + 1; //Add one as months start with 0
+        Integer year = newTime.get(Calendar.YEAR);
+
+        newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
+
+    }
+    public class converterAction implements ActionListener{
 
         public void actionPerformed(ActionEvent a){
-
-            Conversion theConverter = new Conversion();
-
-            // Splitting action to get hour and minute from the Spinner
-            String[] fullTime = baseTimeSpinner.getValue().toString().split(" ");
-            String[] baseTime = fullTime[3].toString().split(":");
-            Integer baseHour = Integer.parseInt(baseTime[0]);
-            Integer baseMinute = Integer.parseInt(baseTime[1]);
-
-            // Splitting action to get month, day, and year.
-            String[] fullDate = baseDatePicker.getDate().toString().split(" ");
-            Integer baseYear = Integer.parseInt(fullDate[5]);
-            Integer baseDay = Integer.parseInt(fullDate[2]);
-            Integer baseMonth = baseDatePicker.getDate().getMonth(); //Have to return a int, using deprecated date method :(
-
-            // Set the base date, which will be converted to the new time
-            Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone(baseTimezoneBox.getSelectedItem().toString()));
-            baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
-
-            // Make Conversion Calls Here
-            Calendar newTime = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
-
-            //Set the new time label
-            Integer hour = newTime.get(Calendar.HOUR_OF_DAY);
-            Integer numMinute = newTime.get(Calendar.MINUTE);
-
-            //Since minute may return a single digit, add a 0 if it is single.
-            String minute = numMinute.toString();
-            if (minute.length() == 1){
-                minute = "0" + minute ;
-            }
-
-            newTimeLabel.setText(hour.toString() + ":" + minute.toString());
-
-
-            //Set the new date label
-            Integer day = newTime.get(Calendar.DAY_OF_MONTH);
-            Integer dayOfWeek = newTime.get(Calendar.DAY_OF_WEEK);
-            String nameDayOfWeek = theConverter.getDayOfWeekName(dayOfWeek);
-            Integer month = newTime.get(Calendar.MONTH) + 1; //Add one as months start with 0
-            Integer year = newTime.get(Calendar.YEAR);
-
-            newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
-
+            convertTime();
         }
 
     }
-
-
 
 }
