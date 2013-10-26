@@ -4,6 +4,8 @@ import org.jdesktop.swingx.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemListener;
+import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
@@ -46,10 +48,12 @@ public class GUI {
 
 
         mainPanel = new Panel();
+        Menu menu = new Menu();
         GridBagConstraints c = new GridBagConstraints();
         c.insets = new Insets(0,10,0,10);
         c.weightx = 0.5;
         c.weighty = 0.5;
+
 
         //Add the base time components
         baseLabel = new JLabel("Current Time", SwingConstants.CENTER);
@@ -86,12 +90,12 @@ public class GUI {
         mainPanel.add(newTimezoneBox, c);
 
         newDateLabel = new JLabel("Sun 01/01/1970", SwingConstants.CENTER);
-        newDateLabel.setFont(new Font("Times New Roman", 0, 24));
+        newDateLabel.setFont(new Font("Times New Roman", 0, 18));
         c.gridy = 2;
         mainPanel.add(newDateLabel, c);
 
         newTimeLabel = new JLabel("00:00", SwingConstants.CENTER);
-        newTimeLabel.setFont(new Font("Times New Roman", 0, 24));
+        newTimeLabel.setFont(new Font("Times New Roman", 0, 18));
         c.gridy = 3;
         mainPanel.add(newTimeLabel, c);
 
@@ -105,6 +109,7 @@ public class GUI {
 
         //Setup the Frame
         frame = new Frame("Timezone Converter");
+        frame.setJMenuBar(menu.createMenuBar());
         frame.getContentPane().add(mainPanel);
         frame.pack();
 
@@ -160,6 +165,11 @@ public class GUI {
         newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
 
     }
+
+
+
+
+
     public class converterAction implements ActionListener{
 
         public void actionPerformed(ActionEvent a){
