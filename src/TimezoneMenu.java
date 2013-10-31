@@ -65,8 +65,6 @@ public class TimezoneMenu {
         standardTimezone.setSelected(true);
         menuBar.add(menu);
 
-
-
     }
 
     public void setTimezoneList(String[] timezoneList){
@@ -82,7 +80,6 @@ public class TimezoneMenu {
 
         baseTimezoneBox.setSelectedItem(currentTZ);
         newTimezoneBox.setSelectedItem("UTC");
-        //convertTime(); //Convert to set for new values.
 
     }
 
@@ -121,7 +118,5 @@ public class TimezoneMenu {
             setTimezoneList(standardTimezoneList);
         }
     }
-
-
 
 }
