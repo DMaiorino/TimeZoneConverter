@@ -1,5 +1,4 @@
 import org.jdesktop.swingx.JXDatePicker;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -43,20 +42,22 @@ public class Panel{
     public void setup(){
 
         mainPanel = new JPanel();
-
         mainPanel.setLayout(new GridBagLayout());
-
         GridBagConstraints c = new GridBagConstraints();
+        JFormattedTextField tf = new JFormattedTextField();
 
+
+        //Setting my contraints here
+        c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(0,10,0,10);
         c.weightx = 0.5;
         c.weighty = 0.5;
 
         //Add the base time components
         baseLabel = new JLabel("Current Time", SwingConstants.CENTER);
-        c.fill = GridBagConstraints.HORIZONTAL;
         c.gridx = 0;
         c.gridy = 0;
+
         mainPanel.add(baseLabel, c);
 
         baseTimezoneBox = new JComboBox();
@@ -65,11 +66,15 @@ public class Panel{
 
         baseDatePicker = new JXDatePicker();
         baseDatePicker.setDate(Calendar.getInstance().getTime());
+        tf = baseDatePicker.getEditor();
+        tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 2;
         mainPanel.add(baseDatePicker, c);
 
         baseTimeSpinner = new JSpinner(new SpinnerDateModel());
         baseTimeSpinner.setEditor(new JSpinner.DateEditor(baseTimeSpinner, "HH:mm"));
+        tf = ((JSpinner.DefaultEditor) baseTimeSpinner.getEditor()).getTextField() ;
+        tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 3;
         mainPanel.add(baseTimeSpinner, c);
 
@@ -96,6 +101,7 @@ public class Panel{
 
         //Add bottom button
         button = new JButton("Convert");
+        c.insets = new Insets(10,10,0,10);
         c.gridwidth = 2;
         c.gridx = 0;
         c.gridy = 4;
