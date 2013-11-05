@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,7 +29,7 @@ public class GUI {
 
     public void start(){
 
-        //Test
+        //Create panel
         mainPanel = new JPanel();
         panel = new Panel();
         mainPanel = panel.getPanel();
@@ -38,7 +39,6 @@ public class GUI {
 
         //Setup Menu, Timezones
         tz = new TimezoneMenu(baseTimezoneBox, newTimezoneBox);
-        //tz = new TimezoneMenu(this.baseTimezoneBox, this.newTimezoneBox);
         baseTimezoneBox.addItem(tz.getStandardTimezoneList());
         newTimezoneBox.addItem(tz.getStandardTimezoneList());
         timezoneMenu = tz.getMenuBar();
@@ -51,6 +51,7 @@ public class GUI {
 
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
+        frame.setSize(new Dimension(400,250));
     }
 
 }

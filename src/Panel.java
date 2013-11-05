@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+import javax.swing.border.EtchedBorder;
+import javax.swing.border.TitledBorder;
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,16 +20,19 @@ public class Panel{
 
     //The JPanel to be returned
     JPanel mainPanel;
+    JPanel leftPanel;
+    JPanel rightPanel;
+
+    //Border
+    TitledBorder titleBorder;
 
     //Base Components
     JXDatePicker baseDatePicker;
     JComboBox baseTimezoneBox;
-    JLabel baseLabel;
     JSpinner baseTimeSpinner;
 
     //New Components
     JComboBox newTimezoneBox;
-    JLabel newLabel;
     JLabel newDateLabel;
     JLabel newTimeLabel;
 
@@ -43,68 +48,78 @@ public class Panel{
 
         mainPanel = new JPanel();
         mainPanel.setLayout(new GridBagLayout());
+
+        leftPanel = new JPanel();
+        leftPanel.setLayout(new GridBagLayout());
+        rightPanel = new JPanel();
+        rightPanel.setLayout(new GridBagLayout());
+
         GridBagConstraints c = new GridBagConstraints();
-        JFormattedTextField tf = new JFormattedTextField();
 
+        //Configure Borders
+        titleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Base Time");
+        leftPanel.setBorder(titleBorder);
+        titleBorder.setTitle("New Time");
+        rightPanel.setBorder(titleBorder);
 
-        //Setting my contraints here
+        //Setting my constraints here
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(0,10,0,10);
+        c.insets = new Insets(5,5,5,0);
         c.weightx = 0.5;
         c.weighty = 0.5;
 
         //Add the base time components
-        baseLabel = new JLabel("Current Time", SwingConstants.CENTER);
+        baseTimezoneBox = new JComboBox();
         c.gridx = 0;
         c.gridy = 0;
-
-        mainPanel.add(baseLabel, c);
-
-        baseTimezoneBox = new JComboBox();
-        c.gridy = 1;
-        mainPanel.add(baseTimezoneBox, c);
+        leftPanel.add(baseTimezoneBox, c);
 
         baseDatePicker = new JXDatePicker();
         baseDatePicker.setDate(Calendar.getInstance().getTime());
-        tf = baseDatePicker.getEditor();
+        JFormattedTextField tf = baseDatePicker.getEditor();
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
-        c.gridy = 2;
-        mainPanel.add(baseDatePicker, c);
+        c.gridy = 1;
+        leftPanel.add(baseDatePicker, c);
 
         baseTimeSpinner = new JSpinner(new SpinnerDateModel());
         baseTimeSpinner.setEditor(new JSpinner.DateEditor(baseTimeSpinner, "HH:mm"));
         tf = ((JSpinner.DefaultEditor) baseTimeSpinner.getEditor()).getTextField() ;
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
-        c.gridy = 3;
-        mainPanel.add(baseTimeSpinner, c);
+        c.gridy = 2;
+        leftPanel.add(baseTimeSpinner, c);
 
 
         //Add the new time components
-        newLabel = new JLabel("New Time", SwingConstants.CENTER);
-        c.gridx = 1; //Move to next column
-        c.gridy = 0;
-        mainPanel.add(newLabel, c);
-
         newTimezoneBox = new JComboBox();
-        c.gridy = 1;
-        mainPanel.add(newTimezoneBox, c);
+        c.insets = new Insets(5,0,5,5);
+        c.gridx = 0;
+        c.gridy = 0;
+        rightPanel.add(newTimezoneBox, c);
 
         newDateLabel = new JLabel("Sun 01/01/1970", SwingConstants.CENTER);
         newDateLabel.setFont(new Font("Times New Roman", 0, 18));
-        c.gridy = 2;
-        mainPanel.add(newDateLabel, c);
+        c.gridy = 1;
+        rightPanel.add(newDateLabel, c);
 
         newTimeLabel = new JLabel("00:00", SwingConstants.CENTER);
         newTimeLabel.setFont(new Font("Times New Roman", 0, 18));
-        c.gridy = 3;
-        mainPanel.add(newTimeLabel, c);
+        c.gridy = 2;
+        rightPanel.add(newTimeLabel, c);
+
+        //Add sub panels to main panel
+        c.gridx = 0;
+        c.gridy = 0;
+        mainPanel.add(leftPanel, c);
+        c.gridx = 1;
+        mainPanel.add(rightPanel, c);
+
 
         //Add bottom button
         button = new JButton("Convert");
-        c.insets = new Insets(10,10,0,10);
+        c.insets = new Insets(0,10,5,10);
         c.gridwidth = 2;
         c.gridx = 0;
-        c.gridy = 4;
+        c.gridy = 1;
         button.addActionListener(new converterAction());
         mainPanel.add(button, c);
 
