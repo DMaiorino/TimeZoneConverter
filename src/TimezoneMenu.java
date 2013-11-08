@@ -151,6 +151,19 @@ public class TimezoneMenu {
         return  standardTimezoneList;
     }
 
+    public void deselectItems(){
+        standardTimezone.setSelected(false);
+        allTimezone.setSelected(false);
+        africaTimezone.setSelected(false);
+        americaTimezone.setSelected(false);
+        asiaTimezone.setSelected(false);
+        australiaTimezone.setSelected(false);
+        europeTimezone.setSelected(false);
+        pacificTimezone.setSelected(false);
+        usTimezone.setSelected(false);
+    }
+
+
     public class quitListener implements ActionListener {
         public void actionPerformed(ActionEvent e){
             System.exit(0);
@@ -159,104 +172,116 @@ public class TimezoneMenu {
 
     public class allListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            allTimezone.setSelected(true);
             setTimezoneList(allTimezoneList);
+            addListeners();
         }
     }
 
     public class standardListener implements ItemListener{
         public  void itemStateChanged(ItemEvent e){
-            if (allTimezone.isSelected()){
-                allTimezone.removeItemListener(allListener);
-                allTimezone.setSelected(false);
-                allTimezone.addItemListener(allListener);
-            }
+            removeListeners();
+            deselectItems();
+            standardTimezone.setSelected(true);
             setTimezoneList(standardTimezoneList);
+            addListeners();
         }
     }
 
     public class africaListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            africaTimezone.setSelected(true);
             setTimezoneList(africaTimezoneList);
+            addListeners();
         }
     }
 
     public class americaListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            americaTimezone.setSelected(true);
             setTimezoneList(americaTimezoneList);
+            addListeners();
         }
     }
 
     public class asiaListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            asiaTimezone.setSelected(true);
             setTimezoneList(asiaTimezoneList);
+            addListeners();
         }
     }
 
     public class australiaListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            australiaTimezone.setSelected(true);
             setTimezoneList(australiaTimezoneList);
+            addListeners();
         }
     }
 
     public class europeListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            europeTimezone.setSelected(true);
             setTimezoneList(europeTimezoneList);
+            addListeners();
         }
     }
 
     public class pacificListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            pacificTimezone.setSelected(true);
             setTimezoneList(pacificTimezoneList);
+            addListeners();
         }
     }
 
     public class usListener implements ItemListener {
         public  void itemStateChanged(ItemEvent e){
-            if (standardTimezone.isSelected()){
-                standardTimezone.removeItemListener(standardListener);
-                standardTimezone.setSelected(false);
-                standardTimezone.addItemListener(standardListener);
-            }
+            removeListeners();
+            deselectItems();
+            usTimezone.setSelected(true);
             setTimezoneList(usTimezoneList);
+            addListeners();
         }
     }
 
+    public void removeListeners(){
+        standardTimezone.removeItemListener(standardListener);
+        allTimezone.removeItemListener(allListener);
+        africaTimezone.removeItemListener(africaListener);
+        americaTimezone.removeItemListener(americaListener);
+        asiaTimezone.removeItemListener(asiaListener);
+        australiaTimezone.removeItemListener(australiaListener);
+        europeTimezone.removeItemListener(europeListener);
+        pacificTimezone.removeItemListener(pacificListener);
+        usTimezone.removeItemListener(usListener);
+    }
 
-
+    public void addListeners(){
+        standardTimezone.addItemListener(standardListener);
+        allTimezone.addItemListener(allListener);
+        africaTimezone.addItemListener(africaListener);
+        americaTimezone.addItemListener(americaListener);
+        asiaTimezone.addItemListener(asiaListener);
+        australiaTimezone.addItemListener(australiaListener);
+        europeTimezone.addItemListener(europeListener);
+        pacificTimezone.addItemListener(pacificListener);
+        usTimezone.addItemListener(usListener);
+    }
 
 }
