@@ -16,8 +16,8 @@ public class GUI {
     JFrame frame;
 
     //Base Components
-    JComboBox baseTimezoneBox;
-    JComboBox newTimezoneBox;
+    JComboBox<String[]> baseTimezoneBox;
+    JComboBox<String[]> newTimezoneBox;
 
     //Time Info
     TimezoneMenu tz;

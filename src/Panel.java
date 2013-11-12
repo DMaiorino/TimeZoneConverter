@@ -33,6 +33,7 @@ public class Panel{
 
     //New Components
     JComboBox newTimezoneBox;
+    static String header;
     JLabel newDateLabel;
     JLabel newTimeLabel;
 
@@ -123,11 +124,16 @@ public class Panel{
         button.addActionListener(new converterAction());
         mainPanel.add(button, c);
 
+        //Set String header to default
+        header = "";
+
     }
 
     public void convertTime(){
 
         Conversion theConverter = new Conversion();
+        String timezone = new String();
+        timezone = "";
 
         // Splitting action to get hour and minute from the Spinner
         String[] fullTime = baseTimeSpinner.getValue().toString().split(" ");
@@ -142,11 +148,12 @@ public class Panel{
         Integer baseMonth = baseDatePicker.getDate().getMonth(); //Have to return a int, using deprecated date method :(
 
         // Set the base date, which will be converted to the new time
-        Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone(baseTimezoneBox.getSelectedItem().toString()));
+        Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone( header + baseTimezoneBox.getSelectedItem().toString()));
         baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
 
         // Make Conversion Calls Here
-        Calendar newTime = theConverter.getNewTime(baseDate, newTimezoneBox.getSelectedItem().toString());
+//        timezone = header + newTimezoneBox.getSelectedItem().toString();
+        Calendar newTime = theConverter.getNewTime(baseDate, header + newTimezoneBox.getSelectedItem().toString());
 
         //Set the new time label
         Integer hour = newTime.get(Calendar.HOUR_OF_DAY);
@@ -182,6 +189,10 @@ public class Panel{
 
     public JComboBox getNewTimezoneBox(){
         return  newTimezoneBox;
+    }
+
+    public static void setTimezoneheader(String newHeader){
+        header = newHeader;
     }
 
     public class converterAction implements ActionListener {
