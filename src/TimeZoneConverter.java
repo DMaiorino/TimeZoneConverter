@@ -3,7 +3,7 @@
  * User: dave
  * Date: 10/5/13
  * Time: 5:54 PM
- * To change this template use File | Settings | File Templates.
+ * A simple app for converting time.
  */
 public class TimeZoneConverter {
 
