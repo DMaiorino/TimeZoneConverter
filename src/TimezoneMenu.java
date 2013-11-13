@@ -46,7 +46,7 @@ public class TimezoneMenu {
     final JComboBox<String> baseTimezoneBox;
     final JComboBox<String> newTimezoneBox;
 
-    public TimezoneMenu(JComboBox baseTimezoneBox, JComboBox newTimezoneBox) {
+    public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox) {
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
         createMenuBar();
@@ -70,7 +70,7 @@ public class TimezoneMenu {
         //Main  Menu
         JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_Q); //Save function
         JMenuItem menuItem = new JMenuItem("Quit", KeyEvent.VK_Q);
-        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
+        menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         menuItem.addActionListener(new quitListener());
 
         menu.add(saveItem);
@@ -142,6 +142,7 @@ public class TimezoneMenu {
 
         baseTimezoneBox.removeAllItems();
         newTimezoneBox.removeAllItems();
+
         for (String tz : timezoneList) {
             baseTimezoneBox.addItem(tz);
             newTimezoneBox.addItem(tz);

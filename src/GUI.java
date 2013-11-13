@@ -16,11 +16,11 @@ public class GUI {
     JFrame frame;
 
     //Base Components
-    JComboBox<String[]> baseTimezoneBox;
-    JComboBox<String[]> newTimezoneBox;
+    JComboBox<String> baseTimezoneBox;
+    JComboBox<String> newTimezoneBox;
 
     //Time Info
-    TimezoneMenu tz;
+    TimezoneMenu timezoneMenuObject;
     JMenuBar timezoneMenu;
 
     //Panel Instances
@@ -38,10 +38,12 @@ public class GUI {
         this.newTimezoneBox = panel.getNewTimezoneBox();
 
         //Setup Menu, Timezones
-        tz = new TimezoneMenu(baseTimezoneBox, newTimezoneBox);
-        baseTimezoneBox.addItem(tz.getStandardTimezoneList());
-        newTimezoneBox.addItem(tz.getStandardTimezoneList());
-        timezoneMenu = tz.getMenuBar();
+        timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox);
+        for (String timezone : timezoneMenuObject.getStandardTimezoneList()) {
+            baseTimezoneBox.addItem(timezone);
+            newTimezoneBox.addItem(timezone);
+        }
+        timezoneMenu = timezoneMenuObject.getMenuBar();
 
         //Setup the Frame
         frame = new Frame("Timezone Converter");

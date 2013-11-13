@@ -28,11 +28,11 @@ public class Panel{
 
     //Base Components
     JXDatePicker baseDatePicker;
-    JComboBox baseTimezoneBox;
+    JComboBox<String> baseTimezoneBox;
     JSpinner baseTimeSpinner;
 
     //New Components
-    JComboBox newTimezoneBox;
+    JComboBox<String> newTimezoneBox;
     static String header;
     JLabel newDateLabel;
     JLabel newTimeLabel;
@@ -70,7 +70,7 @@ public class Panel{
         c.weighty = 0.5;
 
         //Add the base time components
-        baseTimezoneBox = new JComboBox();
+        baseTimezoneBox = new JComboBox<String>();
         c.gridx = 0;
         c.gridy = 0;
         leftPanel.add(baseTimezoneBox, c);
@@ -91,7 +91,7 @@ public class Panel{
 
 
         //Add the new time components
-        newTimezoneBox = new JComboBox();
+        newTimezoneBox = new JComboBox<String>();
         c.insets = new Insets(5,0,5,5);
         c.gridx = 0;
         c.gridy = 0;
@@ -132,12 +132,10 @@ public class Panel{
     public void convertTime(){
 
         Conversion theConverter = new Conversion();
-        String timezone = new String();
-        timezone = "";
 
         // Splitting action to get hour and minute from the Spinner
         String[] fullTime = baseTimeSpinner.getValue().toString().split(" ");
-        String[] baseTime = fullTime[3].toString().split(":");
+        String[] baseTime = fullTime[3].split(":");
         Integer baseHour = Integer.parseInt(baseTime[0]);
         Integer baseMinute = Integer.parseInt(baseTime[1]);
 
@@ -183,11 +181,11 @@ public class Panel{
         return  mainPanel;
     }
 
-    public JComboBox getBaseTimezoneBox(){
+    public JComboBox<String> getBaseTimezoneBox(){
         return  baseTimezoneBox;
     }
 
-    public JComboBox getNewTimezoneBox(){
+    public JComboBox<String> getNewTimezoneBox(){
         return  newTimezoneBox;
     }
 
