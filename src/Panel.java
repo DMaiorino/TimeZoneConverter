@@ -16,7 +16,7 @@ import javax.swing.border.TitledBorder;
  * Time: 1:12 PM
  * A simple app for converting time.
  */
-public class Panel{
+public class Panel extends JPanel{
 
     //The JPanel to be returned
     JPanel mainPanel;
@@ -98,12 +98,12 @@ public class Panel{
         rightPanel.add(newTimezoneBox, c);
 
         newDateLabel = new JLabel("Sun 01/01/1970", SwingConstants.CENTER);
-        newDateLabel.setFont(new Font("Times New Roman", 0, 18));
+        newDateLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
         c.gridy = 1;
         rightPanel.add(newDateLabel, c);
 
         newTimeLabel = new JLabel("00:00", SwingConstants.CENTER);
-        newTimeLabel.setFont(new Font("Times New Roman", 0, 18));
+        newTimeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
         c.gridy = 2;
         rightPanel.add(newTimeLabel, c);
 

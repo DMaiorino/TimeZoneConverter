@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -126,7 +127,10 @@ public class TimezoneMenu {
 
         //Add Help Menu
         JMenu helpMenu = new JMenu("Help");
+        JMenuItem aboutItem = new JMenuItem("About");
+        aboutItem.addActionListener(new aboutListener());
 
+        helpMenu.add(aboutItem);
 
         //Add menus to the menu bar
         standardTimezone.setSelected(true);
@@ -187,6 +191,34 @@ public class TimezoneMenu {
             allTimezone.setSelected(true);
             setTimezoneList(allTimezoneList);
             addListeners();
+        }
+    }
+
+    public class aboutListener implements ActionListener {
+
+        JFrame aboutWindow;
+
+        public void actionPerformed(ActionEvent e) {
+
+            JTextArea aboutText = new JTextArea();
+            aboutText.setText("This is a test!");
+            aboutText.setBackground(null);
+            JButton exitButton = new JButton("Exit");
+            exitButton.addActionListener(new closeListener());
+
+            aboutWindow = new JFrame("About Timezone Converter");
+            aboutWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            aboutWindow.getContentPane().add(aboutText, BorderLayout.CENTER);
+            aboutWindow.getContentPane().add(exitButton, BorderLayout.SOUTH);
+            aboutWindow.setSize(new Dimension(400,250));
+            aboutWindow.setVisible(true);
+
+        }
+
+        class closeListener implements ActionListener {
+            public void actionPerformed(ActionEvent e) {
+                aboutWindow.dispose();
+            }
         }
     }
 
