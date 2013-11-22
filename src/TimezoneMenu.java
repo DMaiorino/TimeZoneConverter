@@ -1,6 +1,11 @@
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
@@ -200,20 +205,61 @@ public class TimezoneMenu {
 
         public void actionPerformed(ActionEvent e) {
 
-            JTextArea aboutText = new JTextArea();
-            aboutText.setText("This is a test!");
-            aboutText.setBackground(null);
+
+            JTextPane aboutText = new JTextPane();
             JButton exitButton = new JButton("Exit");
+            Border blackline = BorderFactory.createLineBorder(Color.black);
+
+            //Setup the Window. We need to add the components here, as these will be static.
+            aboutWindow = new JFrame("About Open Time Zone Converter");
+            aboutWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+            aboutWindow.setLayout(null);
+            aboutWindow.getContentPane().add(exitButton);
+            aboutWindow.getContentPane().add(aboutText);
+
+
+            //Top Text area
+            Insets insets = aboutWindow.getInsets();
+            aboutText.setBackground(null);
+            aboutText.setEditable(false);
+            aboutText.setOpaque(false);
+            aboutText.setBorder(blackline);
+            aboutText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
+            aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit http://opensource.org/licenses/MIT<br>");
+            aboutText.setBackground(null);
+            Dimension size = aboutText.getPreferredSize();
+            aboutText.setBounds(5 + insets.left, insets.top, size.width, size.height);
+
+            //This listener will allow  for the user to click the hyperlink
+            aboutText.addHyperlinkListener(new HyperlinkListener() {
+                public void hyperlinkUpdate(HyperlinkEvent e) {
+                    if (e.getEventType() == HyperlinkEvent.EventType.ACTIVATED) {
+                        if (Desktop.isDesktopSupported()) {
+                            try {
+                                Desktop.getDesktop().browse(e.getURL().toURI());
+                            } catch (IOException ioe) {
+                                ioe.printStackTrace();
+                            } catch (URISyntaxException urie) {
+                                urie.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            });
+
+            //Bottom button setup
+            size = exitButton.getPreferredSize();
+            exitButton.setBounds(350 + insets.left, 185 + insets.top, size.width, size.height);
             exitButton.addActionListener(new closeListener());
 
-            aboutWindow = new JFrame("About Timezone Converter");
-            aboutWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            aboutWindow.getContentPane().add(aboutText, BorderLayout.CENTER);
-            aboutWindow.getContentPane().add(exitButton, BorderLayout.SOUTH);
-            aboutWindow.setSize(new Dimension(400,250));
+            //Wrap up the window settings
+            aboutWindow.setSize(new Dimension(440,250));
+            aboutWindow.setResizable(false);
             aboutWindow.setVisible(true);
 
+
         }
+
 
         class closeListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
@@ -221,6 +267,8 @@ public class TimezoneMenu {
             }
         }
     }
+
+
 
     public class standardListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
