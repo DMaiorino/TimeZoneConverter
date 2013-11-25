@@ -4,7 +4,9 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.io.IOException;
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.*;
 import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -18,6 +20,10 @@ import java.util.TimeZone;
  * A simple app for converting time.
  */
 public class TimezoneMenu {
+
+
+    //Panel
+    Panel myPanel;
 
     //Menu Components
     private JMenuBar menuBar;
@@ -50,7 +56,7 @@ public class TimezoneMenu {
 
     //JCombo boxes for Timezone
     final JComboBox<String> baseTimezoneBox;
-    final JComboBox<String> newTimezoneBox;
+    JComboBox<String> newTimezoneBox;
 
     public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox) {
         this.baseTimezoneBox = baseTimezoneBox;
@@ -75,11 +81,19 @@ public class TimezoneMenu {
 
         //Main  Menu
         JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_Q); //Save function
+        JMenuItem restoreItem = new JMenuItem("Restore", KeyEvent.VK_R); //Restore function
         JMenuItem menuItem = new JMenuItem("Quit", KeyEvent.VK_Q);
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         menuItem.addActionListener(new quitListener());
 
+        saveItem.addActionListener(new saveListener());
+        saveItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, InputEvent.CTRL_MASK));
+
+        restoreItem.addActionListener(new restoreListener());
+        restoreItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_R, InputEvent.CTRL_MASK));
+
         menu.add(saveItem);
+        menu.add(restoreItem);
         menu.addSeparator();
         menu.add(menuItem);
 
@@ -89,12 +103,12 @@ public class TimezoneMenu {
         JMenu regionMenu = new JMenu("Region");
         regionMenu.setMnemonic(KeyEvent.VK_R);
 
-        standardTimezone = new JRadioButtonMenuItem("Regular Timezone");
+        standardTimezone = new JRadioButtonMenuItem("Regular_Timezone");
         standardTimezone.setMnemonic(KeyEvent.VK_S);
         standardTimezone.addItemListener(standardListener);
         timezoneMenu.add(standardTimezone);
 
-        allTimezone = new JRadioButtonMenuItem("All Timezone");
+        allTimezone = new JRadioButtonMenuItem("All_Timezone");
         allTimezone.setMnemonic(KeyEvent.VK_A);
         allTimezone.addItemListener(allListener);
         timezoneMenu.add(allTimezone);
@@ -143,6 +157,8 @@ public class TimezoneMenu {
         menuBar.add(timezoneMenu);
         menuBar.add(helpMenu);
 
+        myPanel = new Panel();
+
     }
 
     public void setTimezoneList(String[] timezoneList) {
@@ -182,20 +198,52 @@ public class TimezoneMenu {
         usTimezone.setSelected(false);
     }
 
+    public class saveListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+           savePanel();
+        }
+    }
+
+
+    private void savePanel(){
+
+        JRadioButtonMenuItem saveTZ = getSelectedTimezone();
+
+        try {
+            XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
+            xmlEncoder.writeObject(saveTZ);
+            xmlEncoder.close();
+        }catch (IOException io){
+            System.err.println("FileNotFoundException: " + io.getMessage());
+        }
+    }
+
+    public class restoreListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            restorePanel();
+        }
+    }
+
+
+    private void restorePanel(){
+
+        JRadioButtonMenuItem restoreTZ = getSelectedTimezone();
+
+        try {
+            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("save.xml")));
+            Object objectTZ = xmlDecoder.readObject();
+            restoreTZ = (JRadioButtonMenuItem)objectTZ;
+            setSelectedTimezone(restoreTZ.getText());
+            xmlDecoder.close();
+        }catch (IOException io){
+            System.err.println("FileNotFoundException: " + io.getMessage());
+        }
+
+    }
 
     public class quitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             System.exit(0);
-        }
-    }
-
-    public class allListener implements ItemListener {
-        public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            allTimezone.setSelected(true);
-            setTimezoneList(allTimezoneList);
-            addListeners();
         }
     }
 
@@ -225,7 +273,7 @@ public class TimezoneMenu {
             aboutText.setOpaque(false);
             aboutText.setBorder(blackline);
             aboutText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-            aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit http://opensource.org/licenses/MIT<br>");
+            aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit <a href=\"http://opensource.org/licenses/MIT\">http://opensource.org/licenses/MIT/<a><br>");
             aboutText.setBackground(null);
             Dimension size = aboutText.getPreferredSize();
             aboutText.setBounds(5 + insets.left, insets.top, size.width, size.height);
@@ -257,7 +305,6 @@ public class TimezoneMenu {
             aboutWindow.setResizable(false);
             aboutWindow.setVisible(true);
 
-
         }
 
 
@@ -269,92 +316,138 @@ public class TimezoneMenu {
     }
 
 
-
     public class standardListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            standardTimezone.setSelected(true);
-            setTimezoneList(standardTimezoneList);
-            addListeners();
+            updateForStandard();
         }
+    }
+
+    private void updateForStandard(){
+        removeListeners();
+        deselectItems();
+        standardTimezone.setSelected(true);
+        setTimezoneList(standardTimezoneList);
+        addListeners();
+    }
+
+
+    public class allListener implements ItemListener {
+        public void itemStateChanged(ItemEvent e) {
+            updateForAll();
+        }
+    }
+
+    private void updateForAll(){
+        removeListeners();
+        deselectItems();
+        allTimezone.setSelected(true);
+        setTimezoneList(allTimezoneList);
+        addListeners();
     }
 
     public class africaListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("Africa/");
-            africaTimezone.setSelected(true);
-            setTimezoneList(africaTimezoneList);
-            addListeners();
+            updateForAfrica();
         }
+    }
+
+    private void updateForAfrica(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("Africa/");
+        africaTimezone.setSelected(true);
+        setTimezoneList(africaTimezoneList);
+        addListeners();
     }
 
     public class americaListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("America/");
-            americaTimezone.setSelected(true);
-            setTimezoneList(americaTimezoneList);
-            addListeners();
+            updateForAmerica();
         }
+    }
+
+    private void updateForAmerica(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("America/");
+        americaTimezone.setSelected(true);
+        setTimezoneList(americaTimezoneList);
+        addListeners();
     }
 
     public class asiaListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("Asia/");
-            asiaTimezone.setSelected(true);
-            setTimezoneList(asiaTimezoneList);
-            addListeners();
+            updateForAsia();
         }
+    }
+
+    private void updateForAsia(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("Asia/");
+        asiaTimezone.setSelected(true);
+        setTimezoneList(asiaTimezoneList);
+        addListeners();
     }
 
     public class australiaListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("Australia/");
-            australiaTimezone.setSelected(true);
-            setTimezoneList(australiaTimezoneList);
-            addListeners();
+            updateForAustralia();
         }
+    }
+
+    private void updateForAustralia(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("Australia/");
+        australiaTimezone.setSelected(true);
+        setTimezoneList(australiaTimezoneList);
+        addListeners();
     }
 
     public class europeListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("Europe/");
-            europeTimezone.setSelected(true);
-            setTimezoneList(europeTimezoneList);
-            addListeners();
+            updateForEurope();
         }
+    }
+
+    private void updateForEurope(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("Europe/");
+        europeTimezone.setSelected(true);
+        setTimezoneList(europeTimezoneList);
+        addListeners();
     }
 
     public class pacificListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("Pacific/");
-            pacificTimezone.setSelected(true);
-            setTimezoneList(pacificTimezoneList);
-            addListeners();
+            updateForPacific();
         }
+    }
+
+    private void updateForPacific(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("Pacific/");
+        pacificTimezone.setSelected(true);
+        setTimezoneList(pacificTimezoneList);
+        addListeners();
     }
 
     public class usListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
-            removeListeners();
-            deselectItems();
-            Panel.setTimezoneheader("US/");
-            usTimezone.setSelected(true);
-            setTimezoneList(usTimezoneList);
-            addListeners();
+            updateForUs();
         }
+    }
+
+    private void updateForUs(){
+        removeListeners();
+        deselectItems();
+        Panel.setTimezoneheader("US/");
+        usTimezone.setSelected(true);
+        setTimezoneList(usTimezoneList);
+        addListeners();
     }
 
     public void removeListeners() {
@@ -381,4 +474,81 @@ public class TimezoneMenu {
         usTimezone.addItemListener(usListener);
     }
 
+    public JRadioButtonMenuItem getSelectedTimezone(){
+
+        if (standardTimezone.isSelected()){
+            return  standardTimezone;
+        }else if (allTimezone.isSelected()){
+            return  allTimezone;
+        }else if (africaTimezone.isSelected()){
+            return africaTimezone;
+        }else if (americaTimezone.isSelected()){
+            return  americaTimezone;
+        } else if (asiaTimezone.isSelected()){
+            return asiaTimezone;
+        } else if (australiaTimezone.isSelected()){
+            return  australiaTimezone;
+        } else if (europeTimezone.isSelected()){
+            return europeTimezone;
+        } else if (pacificTimezone.isSelected()){
+            return pacificTimezone;
+        } else if (usTimezone.isSelected()){
+            return usTimezone;
+        } else {
+            return standardTimezone;
+        }
+
+    }
+
+    public void setSelectedTimezone(String timezone){
+
+        Regions selectedTimezone = Regions.valueOf(timezone);
+
+        switch (selectedTimezone){
+            case Regular_Timezone:
+                updateForStandard();
+                break;
+            case All_Timezone:
+                updateForAll();
+                break;
+            case Africa:
+                updateForAfrica();
+                break;
+            case America:
+                updateForAmerica();
+                break;
+            case Asia:
+                updateForAsia();
+                break;
+            case Australia:
+                updateForAustralia();
+                break;
+            case Europe:
+                updateForEurope();
+                break;
+            case Pacific:
+                updateForPacific();
+                break;
+            case US:
+                updateForUs();
+                break;
+            default:
+                updateForStandard();
+        }
+    }
+
 }
+
+enum Regions {
+    Regular_Timezone,
+    Africa,
+    America,
+    Asia,
+    Australia,
+    Europe,
+    All_Timezone,
+    Pacific,
+    US
+}
+
+

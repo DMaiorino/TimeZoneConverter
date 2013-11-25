@@ -24,7 +24,8 @@ public class Panel extends JPanel{
     JPanel rightPanel;
 
     //Border
-    TitledBorder titleBorder;
+    TitledBorder leftTitleBorder;
+    TitledBorder rightTitleBorder;
 
     //Base Components
     JXDatePicker baseDatePicker;
@@ -58,10 +59,11 @@ public class Panel extends JPanel{
         GridBagConstraints c = new GridBagConstraints();
 
         //Configure Borders
-        titleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Base Time");
-        leftPanel.setBorder(titleBorder);
-        titleBorder.setTitle("New Time");
-        rightPanel.setBorder(titleBorder);
+        leftTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Current Time");
+        //rightTitleBorder.setTitle("Current Time");
+        leftPanel.setBorder(leftTitleBorder);
+        rightTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "New Time");
+        rightPanel.setBorder(rightTitleBorder);
 
         //Setting my constraints here
         c.fill = GridBagConstraints.BOTH;
@@ -145,7 +147,7 @@ public class Panel extends JPanel{
         Integer baseDay = Integer.parseInt(fullDate[2]);
         Integer baseMonth = baseDatePicker.getDate().getMonth(); //Have to return a int, using deprecated date method :(
 
-        // Set the base date, which will be converted to the new time
+        // Set the base date, which will be changed to the new time
         Calendar baseDate = new GregorianCalendar(TimeZone.getTimeZone( header + baseTimezoneBox.getSelectedItem().toString()));
         baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
 
@@ -198,7 +200,6 @@ public class Panel extends JPanel{
         public void actionPerformed(ActionEvent a){
             convertTime();
         }
-
     }
 
 }
