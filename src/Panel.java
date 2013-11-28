@@ -116,6 +116,11 @@ public class Panel extends JPanel{
         c.gridx = 1;
         mainPanel.add(rightPanel, c);
 
+        //Add Listeners
+        /*
+        newTimezoneBox.addActionListener(new converterAction());
+        baseTimezoneBox.addActionListener(new converterAction());
+        */
 
         //Add bottom button
         button = new JButton("Convert");
@@ -125,6 +130,7 @@ public class Panel extends JPanel{
         c.gridy = 1;
         button.addActionListener(new converterAction());
         mainPanel.add(button, c);
+
 
         //Set String header to default
         header = "";
@@ -152,7 +158,6 @@ public class Panel extends JPanel{
         baseDate.set(baseYear, baseMonth, baseDay, baseHour, baseMinute);
 
         // Make Conversion Calls Here
-//        timezone = header + newTimezoneBox.getSelectedItem().toString();
         Calendar newTime = theConverter.getNewTime(baseDate, header + newTimezoneBox.getSelectedItem().toString());
 
         //Set the new time label

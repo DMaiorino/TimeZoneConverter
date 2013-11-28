@@ -11,6 +11,7 @@ import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.prefs.Preferences;
 
 /**
  * Created with IntelliJ IDEA.
@@ -58,6 +59,8 @@ public class TimezoneMenu {
     final JComboBox<String> baseTimezoneBox;
     JComboBox<String> newTimezoneBox;
 
+    Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
+
     public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox) {
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
@@ -77,7 +80,6 @@ public class TimezoneMenu {
         europeListener = new europeListener();
         pacificListener = new pacificListener();
         usListener = new usListener();
-
 
         //Main  Menu
         JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_Q); //Save function
@@ -173,8 +175,11 @@ public class TimezoneMenu {
             newTimezoneBox.addItem(tz);
         }
 
-        baseTimezoneBox.setSelectedItem(currentTZ);
-        newTimezoneBox.setSelectedItem("UTC");
+        //We will update with the save times if they match the current timezone region.
+        String defaultTimezone = "UTC"; //In case no value is returned
+        baseTimezoneBox.setSelectedItem(preferences.get("baseTimezoneBox", defaultTimezone));
+        newTimezoneBox.setSelectedItem(preferences.get("newTimezoneBox", defaultTimezone));
+
 
     }
 
@@ -209,10 +214,15 @@ public class TimezoneMenu {
 
         JRadioButtonMenuItem saveTZ = getSelectedTimezone();
 
+        preferences.put("baseTimezoneBox", baseTimezoneBox.getSelectedItem().toString() );
+        preferences.put("newTimezoneBox", newTimezoneBox.getSelectedItem().toString() );
+
         try {
-            XMLEncoder xmlEncoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
-            xmlEncoder.writeObject(saveTZ);
-            xmlEncoder.close();
+
+            // Save the Timezone region menu item.
+            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
+            xmlEncoderTzRegion.writeObject(saveTZ);
+            xmlEncoderTzRegion.close();
         }catch (IOException io){
             System.err.println("FileNotFoundException: " + io.getMessage());
         }
