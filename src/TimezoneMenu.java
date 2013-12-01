@@ -1,3 +1,5 @@
+import org.jdesktop.swingx.JXDatePicker;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
@@ -8,9 +10,7 @@ import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.TimeZone;
+import java.util.*;
 import java.util.prefs.Preferences;
 
 /**
@@ -44,7 +44,6 @@ public class TimezoneMenu {
 
 
     //Time Info
-    String currentTZ = Calendar.getInstance().getTimeZone().getID();
     String[] allTimezoneList = TimeZone.getAvailableIDs();
     String[] standardTimezoneList = {"Africa/Algiers", "Africa/Cairo", "Africa/Casablanca", "Africa/Harare", "Africa/Nairobi", "Africa/Windhoek", "America/Bogota", "America/Buenos_Aires", "America/Caracas", "America/Chihuahua", "America/Guatemala", "America/Mexico_City", "America/Montevideo", "America/Santiago", "America/Tijuana", "Asia/Amman", "Asia/Baghdad", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Calcutta", "Asia/Colombo", "Asia/Dhaka", "Asia/Hong_Kong", "Asia/Irkutsk", "Asia/Jerusalem", "Asia/Kabul", "Asia/Karachi", "Asia/Katmandu", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuwait", "Asia/Magadan", "Asia/Muscat", "Asia/Novosibirsk", "Asia/Rangoon", "Asia/Seoul", "Asia/Shanghai", "Asia/Taipei", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tokyo", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Cape_Verde", "Australia/Adelaide", "Australia/Brisbane", "Australia/Darwin", "Australia/Hobart", "Australia/Perth", "Australia/Sydney", "Brazil/East", "Canada/Eastern", "Canada/Newfoundland", "Canada/Saskatchewan", "Europe/Athens", "Europe/Belgrade", "Europe/Berlin", "Europe/Brussels", "Europe/Helsinki", "Europe/London", "Europe/Minsk", "Europe/Moscow", "Europe/Paris", "Europe/Warsaw", "Pacific/Auckland", "Pacific/Fiji", "Pacific/Guam", "Pacific/Midway", "US/Alaska", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Mountain", "US/Pacific", "UTC"};
     String[] africaTimezoneList = {"Abidjan", "Accra", "Addis_Ababa", "Algiers", "Asmera", "Bamako", "Bangui", "Banjul", "Bissau", "Blantyre", "Brazzaville", "Bujumbura", "Cairo", "Casablanca", "Ceuta", "Conakry", "Dakar", "Dar_es_Salaam", "Djibouti", "Douala", "El_Aaiun", "Freetown", "Gaborone", "Harare", "Johannesburg", "Kampala", "Khartoum", "Kigali", "Kinshasa", "Lagos", "Libreville", "Lome", "Luanda", "Lubumbashi", "Lusaka", "Malabo", "Maputo", "Maseru", "Mbabane", "Mogadishu", "Monrovia", "Nairobi", "Ndjamena", "Niamey", "Nouakchott", "Ouagadougou", "Porto-Novo", "Sao_Tome", "Timbuktu", "Tripoli", "Tunis", "Windhoek"};
@@ -59,11 +58,18 @@ public class TimezoneMenu {
     final JComboBox<String> baseTimezoneBox;
     JComboBox<String> newTimezoneBox;
 
+    //Base components
+    final JXDatePicker baseDatePicker;
+    final JSpinner baseTimeSpinner;
+
+
     Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
 
-    public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox) {
+    public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner) {
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
+        this.baseDatePicker = baseDatePicker;
+        this.baseTimeSpinner = baseTimeSpinner;
         createMenuBar();
     }
 
@@ -217,11 +223,14 @@ public class TimezoneMenu {
         preferences.put("baseTimezoneBox", baseTimezoneBox.getSelectedItem().toString() );
         preferences.put("newTimezoneBox", newTimezoneBox.getSelectedItem().toString() );
 
+
         try {
 
             // Save the Timezone region menu item.
             XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
             xmlEncoderTzRegion.writeObject(saveTZ);
+            xmlEncoderTzRegion.writeObject(baseDatePicker);
+            xmlEncoderTzRegion.writeObject(baseTimeSpinner);
             xmlEncoderTzRegion.close();
         }catch (IOException io){
             System.err.println("FileNotFoundException: " + io.getMessage());
@@ -234,16 +243,43 @@ public class TimezoneMenu {
         }
     }
 
+    public void  setBaseTimeSpinner(JSpinner restoredBaseTimeSpinner){
+        baseTimeSpinner.setValue(restoredBaseTimeSpinner.getValue());
+    }
+
+    public void  setBaseDatePicker(JXDatePicker restoredBaseDatePicker){
+        baseDatePicker.setDate(restoredBaseDatePicker.getDate());
+    }
+
 
     private void restorePanel(){
 
-        JRadioButtonMenuItem restoreTZ = getSelectedTimezone();
+        JRadioButtonMenuItem restoreTZ;
+        JXDatePicker restoredBaseDatePicker;
+        JSpinner restoredBaseTimeSpinner;
 
         try {
             XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("save.xml")));
+
+            //Get saved timezone
             Object objectTZ = xmlDecoder.readObject();
             restoreTZ = (JRadioButtonMenuItem)objectTZ;
+
+            //Get saved date
+            Object objectBaseDatePicker = xmlDecoder.readObject();
+            restoredBaseDatePicker = (JXDatePicker)objectBaseDatePicker;
+
+            //Get saved time
+            Object objectBaseTimeSpinner = xmlDecoder.readObject();
+            restoredBaseTimeSpinner = (JSpinner)objectBaseTimeSpinner;
+
+            //Set panel components with restored values.
+            setBaseTimeSpinner(restoredBaseTimeSpinner);
+            setBaseDatePicker(restoredBaseDatePicker);
             setSelectedTimezone(restoreTZ.getText());
+            setBaseDatePicker(restoredBaseDatePicker);
+
+            //OK, I'm done. Let's close this guy out.
             xmlDecoder.close();
         }catch (IOException io){
             System.err.println("FileNotFoundException: " + io.getMessage());

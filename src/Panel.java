@@ -41,7 +41,6 @@ public class Panel extends JPanel{
     // Convert Button
     JButton button;
 
-
     public Panel(){
         setup();
     }
@@ -60,7 +59,6 @@ public class Panel extends JPanel{
 
         //Configure Borders
         leftTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Current Time");
-        //rightTitleBorder.setTitle("Current Time");
         leftPanel.setBorder(leftTitleBorder);
         rightTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "New Time");
         rightPanel.setBorder(rightTitleBorder);
@@ -116,12 +114,6 @@ public class Panel extends JPanel{
         c.gridx = 1;
         mainPanel.add(rightPanel, c);
 
-        //Add Listeners
-        /*
-        newTimezoneBox.addActionListener(new converterAction());
-        baseTimezoneBox.addActionListener(new converterAction());
-        */
-
         //Add bottom button
         button = new JButton("Convert");
         c.insets = new Insets(0,10,5,10);
@@ -130,7 +122,6 @@ public class Panel extends JPanel{
         c.gridy = 1;
         button.addActionListener(new converterAction());
         mainPanel.add(button, c);
-
 
         //Set String header to default
         header = "";
@@ -194,6 +185,14 @@ public class Panel extends JPanel{
 
     public JComboBox<String> getNewTimezoneBox(){
         return  newTimezoneBox;
+    }
+
+    public JXDatePicker getBaseDatePicker(){
+        return baseDatePicker;
+    }
+
+    public JSpinner getBaseTimeSpinner(){
+        return baseTimeSpinner;
     }
 
     public static void setTimezoneheader(String newHeader){

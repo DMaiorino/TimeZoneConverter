@@ -2,8 +2,6 @@ import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +12,6 @@ import java.awt.event.ComponentListener;
  */
 
 public class GUI{
-
 
     //Window
     JFrame frame;
@@ -30,6 +27,8 @@ public class GUI{
     //Panel Instances
     Panel panel;
     JPanel mainPanel;
+    JXDatePicker baseDatePicker;
+    JSpinner baseTimeSpinner;
 
 
     public void start(){
@@ -41,9 +40,11 @@ public class GUI{
 
         this.baseTimezoneBox = panel.getBaseTimezoneBox();
         this.newTimezoneBox = panel.getNewTimezoneBox();
+        this.baseDatePicker = panel.getBaseDatePicker();
+        this.baseTimeSpinner = panel.getBaseTimeSpinner();
 
         //Setup Menu, Timezones
-        timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox);
+        timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox, baseDatePicker, baseTimeSpinner);
         for (String timezone : timezoneMenuObject.getStandardTimezoneList()) {
             baseTimezoneBox.addItem(timezone);
             newTimezoneBox.addItem(timezone);
@@ -61,15 +62,5 @@ public class GUI{
         frame.setSize(new Dimension(400,250));
 
     }
-
-
-    public void componentHidden(ComponentEvent e) {
-        //
-    }
-
-    public void componentMoved(ComponentEvent e) {
-        //
-    }
-
 
 }
