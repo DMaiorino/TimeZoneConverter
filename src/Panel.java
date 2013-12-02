@@ -19,7 +19,6 @@ import javax.swing.border.TitledBorder;
 public class Panel extends JPanel{
 
     //The JPanel to be returned
-    JPanel mainPanel;
     JPanel leftPanel;
     JPanel rightPanel;
 
@@ -47,8 +46,7 @@ public class Panel extends JPanel{
 
     public void setup(){
 
-        mainPanel = new JPanel();
-        mainPanel.setLayout(new GridBagLayout());
+        setLayout(new GridBagLayout());
 
         leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
@@ -77,6 +75,7 @@ public class Panel extends JPanel{
 
         baseDatePicker = new JXDatePicker();
         baseDatePicker.setDate(Calendar.getInstance().getTime());
+        baseDatePicker.setFont(new Font("Times New Roman", Font.BOLD, 18));
         JFormattedTextField tf = baseDatePicker.getEditor();
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 1;
@@ -84,6 +83,7 @@ public class Panel extends JPanel{
 
         baseTimeSpinner = new JSpinner(new SpinnerDateModel());
         baseTimeSpinner.setEditor(new JSpinner.DateEditor(baseTimeSpinner, "HH:mm"));
+        baseTimeSpinner.setFont(new Font("Times New Roman", Font.BOLD, 20));
         tf = ((JSpinner.DefaultEditor) baseTimeSpinner.getEditor()).getTextField() ;
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 2;
@@ -110,9 +110,9 @@ public class Panel extends JPanel{
         //Add sub panels to main panel
         c.gridx = 0;
         c.gridy = 0;
-        mainPanel.add(leftPanel, c);
+        add(leftPanel, c);
         c.gridx = 1;
-        mainPanel.add(rightPanel, c);
+        add(rightPanel, c);
 
         //Add bottom button
         button = new JButton("Convert");
@@ -121,7 +121,7 @@ public class Panel extends JPanel{
         c.gridx = 0;
         c.gridy = 1;
         button.addActionListener(new converterAction());
-        mainPanel.add(button, c);
+        add(button, c);
 
         //Set String header to default
         header = "";
@@ -163,7 +163,6 @@ public class Panel extends JPanel{
 
         newTimeLabel.setText(hour.toString() + ":" + minute);
 
-
         //Set the new date label
         Integer day = newTime.get(Calendar.DAY_OF_MONTH);
         Integer dayOfWeek = newTime.get(Calendar.DAY_OF_WEEK);
@@ -173,10 +172,6 @@ public class Panel extends JPanel{
 
         newDateLabel.setText(nameDayOfWeek + " " + month + "/" + day + "/" + year);
 
-    }
-
-    public JPanel getPanel(){
-        return  mainPanel;
     }
 
     public JComboBox<String> getBaseTimezoneBox(){

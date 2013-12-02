@@ -26,7 +26,6 @@ public class GUI{
 
     //Panel Instances
     Panel panel;
-    JPanel mainPanel;
     JXDatePicker baseDatePicker;
     JSpinner baseTimeSpinner;
 
@@ -34,16 +33,16 @@ public class GUI{
     public void start(){
 
         //Create panel
-        mainPanel = new JPanel();
         panel = new Panel();
-        mainPanel = panel.getPanel();
+        panel.setVisible(true);
 
+        //Get Panel Components
         this.baseTimezoneBox = panel.getBaseTimezoneBox();
         this.newTimezoneBox = panel.getNewTimezoneBox();
         this.baseDatePicker = panel.getBaseDatePicker();
         this.baseTimeSpinner = panel.getBaseTimeSpinner();
 
-        //Setup Menu, Timezones
+        //Setup Menu
         timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox, baseDatePicker, baseTimeSpinner);
         for (String timezone : timezoneMenuObject.getStandardTimezoneList()) {
             baseTimezoneBox.addItem(timezone);
@@ -54,11 +53,12 @@ public class GUI{
         //Setup the Frame
         frame = new Frame("Open Time Zone Converter");
         frame.setJMenuBar(timezoneMenu);
-        frame.getContentPane().add(mainPanel);
+        frame.getContentPane().add(panel);
         frame.pack();
 
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
+
         frame.setSize(new Dimension(400,250));
 
     }

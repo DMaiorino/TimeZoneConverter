@@ -1,5 +1,4 @@
 import org.jdesktop.swingx.JXDatePicker;
-
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.event.HyperlinkEvent;
@@ -243,15 +242,6 @@ public class TimezoneMenu {
         }
     }
 
-    public void  setBaseTimeSpinner(JSpinner restoredBaseTimeSpinner){
-        baseTimeSpinner.setValue(restoredBaseTimeSpinner.getValue());
-    }
-
-    public void  setBaseDatePicker(JXDatePicker restoredBaseDatePicker){
-        baseDatePicker.setDate(restoredBaseDatePicker.getDate());
-    }
-
-
     private void restorePanel(){
 
         JRadioButtonMenuItem restoreTZ;
@@ -274,10 +264,9 @@ public class TimezoneMenu {
             restoredBaseTimeSpinner = (JSpinner)objectBaseTimeSpinner;
 
             //Set panel components with restored values.
-            setBaseTimeSpinner(restoredBaseTimeSpinner);
-            setBaseDatePicker(restoredBaseDatePicker);
+            baseTimeSpinner.setValue(restoredBaseTimeSpinner.getValue());
+            baseDatePicker.setDate(restoredBaseDatePicker.getDate());
             setSelectedTimezone(restoreTZ.getText());
-            setBaseDatePicker(restoredBaseDatePicker);
 
             //OK, I'm done. Let's close this guy out.
             xmlDecoder.close();
@@ -353,7 +342,6 @@ public class TimezoneMenu {
 
         }
 
-
         class closeListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
                 aboutWindow.dispose();
@@ -362,6 +350,7 @@ public class TimezoneMenu {
     }
 
 
+    //Start defining listeners and their method
     public class standardListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
             updateForStandard();
@@ -375,7 +364,6 @@ public class TimezoneMenu {
         setTimezoneList(standardTimezoneList);
         addListeners();
     }
-
 
     public class allListener implements ItemListener {
         public void itemStateChanged(ItemEvent e) {
@@ -496,6 +484,7 @@ public class TimezoneMenu {
         addListeners();
     }
 
+    //We have to add and remove all listeners so that only the selected region will respond when clicked.
     public void removeListeners() {
         standardTimezone.removeItemListener(standardListener);
         allTimezone.removeItemListener(allListener);
@@ -584,17 +573,3 @@ public class TimezoneMenu {
     }
 
 }
-
-enum Regions {
-    Regular_Timezone,
-    Africa,
-    America,
-    Asia,
-    Australia,
-    Europe,
-    All_Timezone,
-    Pacific,
-    US
-}
-
-
