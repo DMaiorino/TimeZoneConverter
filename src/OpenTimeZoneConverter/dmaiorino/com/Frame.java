@@ -1,7 +1,10 @@
+package OpenTimeZoneConverter.dmaiorino.com;
+
 import org.jdesktop.swingx.JXDatePicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.net.URL;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,9 +63,14 @@ public class Frame extends JFrame {
         getContentPane().add(panel);
         pack();
 
+        //Add image
+        URL imgURL = this.getClass().getResource("kworldclock.png");
+        ImageIcon worldClock =  new ImageIcon(imgURL);
+        setIconImage(worldClock.getImage());
+
+
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
-
         setSize(new Dimension(400,250));
 
     }

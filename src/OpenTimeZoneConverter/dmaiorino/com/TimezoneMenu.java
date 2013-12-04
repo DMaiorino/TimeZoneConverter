@@ -1,3 +1,5 @@
+package OpenTimeZoneConverter.dmaiorino.com;
+
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -226,7 +228,7 @@ public class TimezoneMenu {
         try {
 
             // Save the Timezone region menu item.
-            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
+            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("OpenTimeZoneConverter/dmaiorino/com/save.xml")));
             xmlEncoderTzRegion.writeObject(saveTZ);
             xmlEncoderTzRegion.writeObject(baseDatePicker);
             xmlEncoderTzRegion.writeObject(baseTimeSpinner);
@@ -249,7 +251,7 @@ public class TimezoneMenu {
         JSpinner restoredBaseTimeSpinner;
 
         try {
-            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("save.xml")));
+            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("OpenTimeZoneConverter/dmaiorino/com/save.xml")));
 
             //Get saved timezone
             Object objectTZ = xmlDecoder.readObject();
@@ -309,6 +311,7 @@ public class TimezoneMenu {
             aboutText.setBorder(blackline);
             aboutText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
             aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit <a href=\"http://opensource.org/licenses/MIT\">http://opensource.org/licenses/MIT/<a><br>");
+            aboutText.setText("<center>Created by: David Maiorino<br><br>Icon designed by: Alexander Moore</center>");
             aboutText.setBackground(null);
             Dimension size = aboutText.getPreferredSize();
             aboutText.setBounds(5 + insets.left, insets.top, size.width, size.height);
