@@ -174,8 +174,12 @@ public class TimezoneMenu {
 
         Arrays.sort(timezoneList);
 
+        //We need to turn off the converterAction, so that we can update the timezone boxes
+        Panel.turnOffActiveSwitch();
+
         baseTimezoneBox.removeAllItems();
         newTimezoneBox.removeAllItems();
+
 
         for (String tz : timezoneList) {
             baseTimezoneBox.addItem(tz);
@@ -186,6 +190,9 @@ public class TimezoneMenu {
         String defaultTimezone = "UTC"; //In case no value is returned
         baseTimezoneBox.setSelectedItem(preferences.get("baseTimezoneBox", defaultTimezone));
         newTimezoneBox.setSelectedItem(preferences.get("newTimezoneBox", defaultTimezone));
+
+        //Turn converterAction back on.
+        Panel.turnOnActiveSwitch();
 
 
     }

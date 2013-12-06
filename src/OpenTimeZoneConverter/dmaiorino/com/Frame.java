@@ -59,8 +59,8 @@ public class Frame extends JFrame {
         timezoneMenu = timezoneMenuObject.getMenuBar();
 
         //Setup the Frame
-        setJMenuBar(timezoneMenu);
         getContentPane().add(panel);
+        setJMenuBar(timezoneMenu);
         pack();
 
         //Add image
@@ -71,7 +71,7 @@ public class Frame extends JFrame {
 
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
-        setSize(new Dimension(400,250));
+        //setSize(new Dimension(400,150));
 
     }
 

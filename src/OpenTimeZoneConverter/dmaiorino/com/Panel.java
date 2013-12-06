@@ -10,6 +10,8 @@ import java.util.GregorianCalendar;
 import java.util.TimeZone;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.TitledBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,8 +41,8 @@ public class Panel extends JPanel{
     JLabel newDateLabel;
     JLabel newTimeLabel;
 
-    // Convert Button
-    JButton button;
+    // Convert on/off switch
+    static Boolean activeSwitch;
 
     public Panel(){
         setup();
@@ -71,13 +73,15 @@ public class Panel extends JPanel{
 
         //Add the base time components
         baseTimezoneBox = new JComboBox<String>();
+        baseTimezoneBox.addActionListener(new converterAction());
         c.gridx = 0;
         c.gridy = 0;
         leftPanel.add(baseTimezoneBox, c);
 
         baseDatePicker = new JXDatePicker();
         baseDatePicker.setDate(Calendar.getInstance().getTime());
-        baseDatePicker.setFont(new Font("Times New Roman", Font.BOLD, 18));
+        baseDatePicker.addActionListener(new converterAction());
+        baseDatePicker.setFont(new Font("Times New Roman", Font.BOLD, 20));
         JFormattedTextField tf = baseDatePicker.getEditor();
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 1;
@@ -86,6 +90,7 @@ public class Panel extends JPanel{
         baseTimeSpinner = new JSpinner(new SpinnerDateModel());
         baseTimeSpinner.setEditor(new JSpinner.DateEditor(baseTimeSpinner, "HH:mm"));
         baseTimeSpinner.setFont(new Font("Times New Roman", Font.BOLD, 20));
+        baseTimeSpinner.addChangeListener(new converterChange());
         tf = ((JSpinner.DefaultEditor) baseTimeSpinner.getEditor()).getTextField() ;
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 2;
@@ -94,6 +99,7 @@ public class Panel extends JPanel{
 
         //Add the new time components
         newTimezoneBox = new JComboBox<String>();
+        newTimezoneBox.addActionListener(new converterAction());
         c.insets = new Insets(5,0,5,5);
         c.gridx = 0;
         c.gridy = 0;
@@ -105,7 +111,7 @@ public class Panel extends JPanel{
         rightPanel.add(newDateLabel, c);
 
         newTimeLabel = new JLabel("00:00", SwingConstants.CENTER);
-        newTimeLabel.setFont(new Font("Times New Roman", Font.BOLD, 24));
+        newTimeLabel.setFont(new Font("Times New Roman", Font.BOLD, 30));
         c.gridy = 2;
         rightPanel.add(newTimeLabel, c);
 
@@ -115,15 +121,6 @@ public class Panel extends JPanel{
         add(leftPanel, c);
         c.gridx = 1;
         add(rightPanel, c);
-
-        //Add bottom button
-        button = new JButton("Convert");
-        c.insets = new Insets(0,10,5,10);
-        c.gridwidth = 2;
-        c.gridx = 0;
-        c.gridy = 1;
-        button.addActionListener(new converterAction());
-        add(button, c);
 
         //Set String header to default
         header = "";
@@ -199,8 +196,26 @@ public class Panel extends JPanel{
     public class converterAction implements ActionListener {
 
         public void actionPerformed(ActionEvent a){
-            convertTime();
+            if (activeSwitch){
+                convertTime();
+            }
         }
+    }
+
+    public class converterChange implements ChangeListener {
+        public void stateChanged(ChangeEvent a){
+            if (activeSwitch){
+                convertTime();
+            }
+        }
+    }
+
+    public static void turnOnActiveSwitch(){
+        activeSwitch = true;
+    }
+
+    public static void turnOffActiveSwitch(){
+        activeSwitch = false;
     }
 
 }
