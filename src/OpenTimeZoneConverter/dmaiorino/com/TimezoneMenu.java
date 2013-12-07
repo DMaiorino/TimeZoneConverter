@@ -63,10 +63,15 @@ public class TimezoneMenu {
     final JXDatePicker baseDatePicker;
     final JSpinner baseTimeSpinner;
 
+    //Parent Frame
+    Frame parentFrame;
+
 
     Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
 
-    public TimezoneMenu(JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner) {
+    public TimezoneMenu( JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner) {
+
+        //this.parentFrame = frame;
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
         this.baseDatePicker = baseDatePicker;
@@ -291,37 +296,40 @@ public class TimezoneMenu {
         }
     }
 
+
+
+
     public class aboutListener implements ActionListener {
 
-        JFrame aboutWindow;
+
+        JDialog aboutDialog;
 
         public void actionPerformed(ActionEvent e) {
 
 
+            JPanel aboutPanel = new JPanel();
+
+            aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
+
+            Window parentWindow = SwingUtilities.windowForComponent(baseDatePicker);
+
+            //JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(baseDatePicker);
+            aboutDialog = new JDialog(parentWindow); // parent, isModal
+            aboutDialog.setLocationRelativeTo(baseDatePicker);
+            aboutDialog.setModal(true);
+            aboutDialog.setTitle("Open Time Zone Converter");
+
+            //Border blackline = BorderFactory.createLineBorder(Color.black);
+            Border blackline = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), BorderFactory.createEmptyBorder(10, 10, 10, 10) );
+            Border outerline = BorderFactory.createCompoundBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10), blackline );
             JTextPane aboutText = new JTextPane();
-            JButton exitButton = new JButton("Exit");
-            Border blackline = BorderFactory.createLineBorder(Color.black);
-
-            //Setup the Window. We need to add the components here, as these will be static.
-            aboutWindow = new JFrame("About Open Time Zone Converter");
-            aboutWindow.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-            aboutWindow.setLayout(null);
-            aboutWindow.getContentPane().add(exitButton);
-            aboutWindow.getContentPane().add(aboutText);
-
-
-            //Top Text area
-            Insets insets = aboutWindow.getInsets();
             aboutText.setBackground(null);
             aboutText.setEditable(false);
             aboutText.setOpaque(false);
-            aboutText.setBorder(blackline);
+            aboutText.setBorder(outerline);
             aboutText.setEditorKit(JEditorPane.createEditorKitForContentType("text/html"));
-            aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit <a href=\"http://opensource.org/licenses/MIT\">http://opensource.org/licenses/MIT/<a><br>");
-            aboutText.setText("<center>Created by: David Maiorino<br><br>Icon designed by: Alexander Moore</center>");
+            aboutText.setText("<b><center>Open Time Zone Converter</center></b><br>Version: 1.0.0<br><br>A small open app for converting the time across time zones.<br><br>Have any ideas? Fork me on <a href=\"https://github.com/DMaiorino/TimeZoneConverter\">GitHub</a>!<br><br>This program comes with <b>ABSOLUTELY NO WARRANTY</b>.<br>For details, visit <a href=\"http://opensource.org/licenses/MIT\">http://opensource.org/licenses/MIT/<a><br><br><br><center>Created by: David Maiorino<br><br>Icon designed by: Alexander Moore</center>");
             aboutText.setBackground(null);
-            Dimension size = aboutText.getPreferredSize();
-            aboutText.setBounds(5 + insets.left, insets.top, size.width, size.height);
 
             //This listener will allow  for the user to click the hyperlink
             aboutText.addHyperlinkListener(new HyperlinkListener() {
@@ -340,25 +348,32 @@ public class TimezoneMenu {
                 }
             });
 
-            //Bottom button setup
-            size = exitButton.getPreferredSize();
-            exitButton.setBounds(350 + insets.left, 185 + insets.top, size.width, size.height);
+            JButton exitButton = new JButton("Exit");
             exitButton.addActionListener(new closeListener());
+            exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
-            //Wrap up the window settings
-            aboutWindow.setSize(new Dimension(440,250));
-            aboutWindow.setResizable(false);
-            aboutWindow.setVisible(true);
+
+
+            //Add Components to the aboutPanel, then add the aboutPanel to the aboutDialog
+            aboutPanel.add(aboutText);
+            aboutPanel.add(exitButton);
+            aboutDialog.add(aboutPanel);
+
+            //All done, let's show them the dialog now!
+            aboutDialog.pack();
+            aboutDialog.setVisible(true);
+
 
         }
 
         class closeListener implements ActionListener {
             public void actionPerformed(ActionEvent e) {
-                aboutWindow.dispose();
+                aboutDialog.dispose();
             }
         }
-    }
 
+
+    }
 
     //Start defining listeners and their method
     public class standardListener implements ItemListener {

@@ -37,7 +37,7 @@ public class Frame extends JFrame {
 
     public void setup(){
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new Dimension(400,250));
+        setMinimumSize(new Dimension(400,200));
         setTitle("Open Time Zone Converter");
 
         //Create panel
@@ -71,7 +71,8 @@ public class Frame extends JFrame {
 
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
-        //setSize(new Dimension(400,150));
+        setSize(getMinimumSize());
+
 
     }
 

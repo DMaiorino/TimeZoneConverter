@@ -99,8 +99,9 @@ public class Panel extends JPanel{
 
         //Add the new time components
         newTimezoneBox = new JComboBox<String>();
+        //newTimezoneBox.setFont(new Font("Times New Roman", Font.BOLD, 24));
         newTimezoneBox.addActionListener(new converterAction());
-        c.insets = new Insets(5,0,5,5);
+        c.insets = new Insets(0,5,0,5);
         c.gridx = 0;
         c.gridy = 0;
         rightPanel.add(newTimezoneBox, c);
