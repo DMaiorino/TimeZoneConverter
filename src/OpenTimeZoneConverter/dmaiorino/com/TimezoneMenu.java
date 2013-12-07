@@ -240,7 +240,7 @@ public class TimezoneMenu {
         try {
 
             // Save the Timezone region menu item.
-            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("OpenTimeZoneConverter/dmaiorino/com/save.xml")));
+            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
             xmlEncoderTzRegion.writeObject(saveTZ);
             xmlEncoderTzRegion.writeObject(baseDatePicker);
             xmlEncoderTzRegion.writeObject(baseTimeSpinner);
@@ -263,7 +263,7 @@ public class TimezoneMenu {
         JSpinner restoredBaseTimeSpinner;
 
         try {
-            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("OpenTimeZoneConverter/dmaiorino/com/save.xml")));
+            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("save.xml")));
 
             //Get saved timezone
             Object objectTZ = xmlDecoder.readObject();
@@ -288,6 +288,10 @@ public class TimezoneMenu {
             System.err.println("FileNotFoundException: " + io.getMessage());
         }
 
+        //Set selected here, so the convert action will take place
+        baseTimezoneBox.setSelectedItem(preferences.get("baseTimezoneBox", "UTC"));
+        newTimezoneBox.setSelectedItem(preferences.get("newTimezoneBox", "UTC"));
+
     }
 
     public class quitListener implements ActionListener {
@@ -309,15 +313,13 @@ public class TimezoneMenu {
 
             JPanel aboutPanel = new JPanel();
 
-            aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
-
+            //Set JDialog Box
             Window parentWindow = SwingUtilities.windowForComponent(baseDatePicker);
-
-            //JFrame topFrame = (JFrame) SwingUtilities.getWindowAncestor(baseDatePicker);
-            aboutDialog = new JDialog(parentWindow); // parent, isModal
+            aboutDialog = new JDialog(parentWindow);
             aboutDialog.setLocationRelativeTo(baseDatePicker);
             aboutDialog.setModal(true);
             aboutDialog.setTitle("Open Time Zone Converter");
+            aboutDialog.setResizable(false); //no need to resize
 
             //Border blackline = BorderFactory.createLineBorder(Color.black);
             Border blackline = BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black), BorderFactory.createEmptyBorder(10, 10, 10, 10) );
@@ -355,8 +357,10 @@ public class TimezoneMenu {
 
 
             //Add Components to the aboutPanel, then add the aboutPanel to the aboutDialog
+            aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
             aboutPanel.add(aboutText);
             aboutPanel.add(exitButton);
+            aboutPanel.add(Box.createRigidArea(new Dimension(0, 5)));//Add some space at the bottom
             aboutDialog.add(aboutPanel);
 
             //All done, let's show them the dialog now!
