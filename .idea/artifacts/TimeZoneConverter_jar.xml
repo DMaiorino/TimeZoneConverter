@@ -1,0 +1,11 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TimeZoneConverter:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/TimeZoneConverter_jar</output-path>
+    <root id="archive" name="TimeZoneConverter.jar">
+      <element id="module-output" name="TimeZoneConverter" />
+      <element id="extracted-dir" path="$USER_HOME$/Downloads/swingx.jar" path-in-jar="/" />
+      <element id="library" level="project" name="jdk1.7" />
+      <element id="file-copy" path="$USER_HOME$/Downloads/swingx.jar" />
+    </root>
+  </artifact>
+</component>

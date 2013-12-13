@@ -8,13 +8,15 @@ package OpenTimeZoneConverter.dmaiorino.com;
  * A simple app for converting time.
  */
 enum Regions {
-    Regular_Timezone,
+
+    Simplified,
     Africa,
     America,
     Asia,
     Australia,
     Europe,
-    All_Timezone,
+    All,
     Pacific,
     US
+
 }

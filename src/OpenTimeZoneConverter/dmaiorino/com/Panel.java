@@ -22,13 +22,6 @@ import javax.swing.event.ChangeListener;
  */
 public class Panel extends JPanel{
 
-    //The JPanel to be returned
-    JPanel leftPanel;
-    JPanel rightPanel;
-
-    //Border
-    TitledBorder leftTitleBorder;
-    TitledBorder rightTitleBorder;
 
     //Base Components
     JXDatePicker baseDatePicker;
@@ -52,20 +45,20 @@ public class Panel extends JPanel{
 
         setLayout(new GridBagLayout());
 
-        leftPanel = new JPanel();
+        //Setup the panels
+        JPanel leftPanel = new JPanel();
         leftPanel.setLayout(new GridBagLayout());
-        rightPanel = new JPanel();
+        JPanel rightPanel = new JPanel();
         rightPanel.setLayout(new GridBagLayout());
 
-        GridBagConstraints c = new GridBagConstraints();
-
         //Configure Borders
-        leftTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Current Time");
+        TitledBorder leftTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "Current Time");
         leftPanel.setBorder(leftTitleBorder);
-        rightTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "New Time");
+        TitledBorder rightTitleBorder = BorderFactory.createTitledBorder( BorderFactory.createEtchedBorder(EtchedBorder.LOWERED), "New Time");
         rightPanel.setBorder(rightTitleBorder);
 
         //Setting my constraints here
+        GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5,5,5,0);
         c.weightx = 0.5;
@@ -95,7 +88,6 @@ public class Panel extends JPanel{
         tf.setHorizontalAlignment(JFormattedTextField.CENTER);
         c.gridy = 2;
         leftPanel.add(baseTimeSpinner, c);
-
 
         //Add the new time components
         newTimezoneBox = new JComboBox<String>();

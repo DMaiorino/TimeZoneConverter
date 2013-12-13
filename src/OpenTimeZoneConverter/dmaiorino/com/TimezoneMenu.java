@@ -29,11 +29,11 @@ public class TimezoneMenu {
 
     //Menu Components
     private JMenuBar menuBar;
-    private JRadioButtonMenuItem standardTimezone, allTimezone, africaTimezone, americaTimezone, asiaTimezone, australiaTimezone, europeTimezone, pacificTimezone, usTimezone;
+    private JRadioButtonMenuItem simplifiedTimezone, allTimezone, africaTimezone, americaTimezone, asiaTimezone, australiaTimezone, europeTimezone, pacificTimezone, usTimezone;
 
 
     //Item Listeners
-    private ItemListener standardListener;
+    private ItemListener simplifiedListener;
     private ItemListener allListener;
     private ItemListener africaListener;
     private ItemListener americaListener;
@@ -46,7 +46,7 @@ public class TimezoneMenu {
 
     //Time Info
     String[] allTimezoneList = TimeZone.getAvailableIDs();
-    String[] standardTimezoneList = {"Africa/Algiers", "Africa/Cairo", "Africa/Casablanca", "Africa/Harare", "Africa/Nairobi", "Africa/Windhoek", "America/Bogota", "America/Buenos_Aires", "America/Caracas", "America/Chihuahua", "America/Guatemala", "America/Mexico_City", "America/Montevideo", "America/Santiago", "America/Tijuana", "Asia/Amman", "Asia/Baghdad", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Calcutta", "Asia/Colombo", "Asia/Dhaka", "Asia/Hong_Kong", "Asia/Irkutsk", "Asia/Jerusalem", "Asia/Kabul", "Asia/Karachi", "Asia/Katmandu", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuwait", "Asia/Magadan", "Asia/Muscat", "Asia/Novosibirsk", "Asia/Rangoon", "Asia/Seoul", "Asia/Shanghai", "Asia/Taipei", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tokyo", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Cape_Verde", "Australia/Adelaide", "Australia/Brisbane", "Australia/Darwin", "Australia/Hobart", "Australia/Perth", "Australia/Sydney", "Brazil/East", "Canada/Eastern", "Canada/Newfoundland", "Canada/Saskatchewan", "Europe/Athens", "Europe/Belgrade", "Europe/Berlin", "Europe/Brussels", "Europe/Helsinki", "Europe/London", "Europe/Minsk", "Europe/Moscow", "Europe/Paris", "Europe/Warsaw", "Pacific/Auckland", "Pacific/Fiji", "Pacific/Guam", "Pacific/Midway", "US/Alaska", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Mountain", "US/Pacific", "UTC"};
+    String[] simplifiedTimezoneList = {"Africa/Algiers", "Africa/Cairo", "Africa/Casablanca", "Africa/Harare", "Africa/Nairobi", "Africa/Windhoek", "America/Bogota", "America/Buenos_Aires", "America/Caracas", "America/Chihuahua", "America/Guatemala", "America/Mexico_City", "America/Montevideo", "America/Santiago", "America/Tijuana", "Asia/Amman", "Asia/Baghdad", "Asia/Baku", "Asia/Bangkok", "Asia/Beirut", "Asia/Calcutta", "Asia/Colombo", "Asia/Dhaka", "Asia/Hong_Kong", "Asia/Irkutsk", "Asia/Jerusalem", "Asia/Kabul", "Asia/Karachi", "Asia/Katmandu", "Asia/Krasnoyarsk", "Asia/Kuala_Lumpur", "Asia/Kuwait", "Asia/Magadan", "Asia/Muscat", "Asia/Novosibirsk", "Asia/Rangoon", "Asia/Seoul", "Asia/Shanghai", "Asia/Taipei", "Asia/Tbilisi", "Asia/Tehran", "Asia/Tokyo", "Asia/Vladivostok", "Asia/Yakutsk", "Asia/Yekaterinburg", "Asia/Yerevan", "Atlantic/Azores", "Atlantic/Cape_Verde", "Australia/Adelaide", "Australia/Brisbane", "Australia/Darwin", "Australia/Hobart", "Australia/Perth", "Australia/Sydney", "Brazil/East", "Canada/Eastern", "Canada/Newfoundland", "Canada/Saskatchewan", "Europe/Athens", "Europe/Belgrade", "Europe/Berlin", "Europe/Brussels", "Europe/Helsinki", "Europe/London", "Europe/Minsk", "Europe/Moscow", "Europe/Paris", "Europe/Warsaw", "Pacific/Auckland", "Pacific/Fiji", "Pacific/Guam", "Pacific/Midway", "US/Alaska", "US/Arizona", "US/Central", "US/East-Indiana", "US/Eastern", "US/Hawaii", "US/Mountain", "US/Pacific", "UTC"};
     String[] africaTimezoneList = {"Abidjan", "Accra", "Addis_Ababa", "Algiers", "Asmera", "Bamako", "Bangui", "Banjul", "Bissau", "Blantyre", "Brazzaville", "Bujumbura", "Cairo", "Casablanca", "Ceuta", "Conakry", "Dakar", "Dar_es_Salaam", "Djibouti", "Douala", "El_Aaiun", "Freetown", "Gaborone", "Harare", "Johannesburg", "Kampala", "Khartoum", "Kigali", "Kinshasa", "Lagos", "Libreville", "Lome", "Luanda", "Lubumbashi", "Lusaka", "Malabo", "Maputo", "Maseru", "Mbabane", "Mogadishu", "Monrovia", "Nairobi", "Ndjamena", "Niamey", "Nouakchott", "Ouagadougou", "Porto-Novo", "Sao_Tome", "Timbuktu", "Tripoli", "Tunis", "Windhoek"};
     String[] americaTimezoneList = {"Belize", "Boa_Vista", "Bogota", "Boise", "Buenos_Aires", "Cambridge_Bay", "Campo_Grande", "Cancun", "Caracas", "Catamarca", "Cayenne", "Cayman", "Chicago", "Chihuahua", "Cordoba", "Costa_Rica", "Cuiaba", "Curacao", "Danmarkshavn", "Dawson", "Dawson_Creek", "Denver", "Detroit", "Dominica", "Edmonton", "Eirunepe", "El_Salvador", "Ensenada", "Fort_Wayne", "Fortaleza", "Glace_Bay", "Godthab", "Goose_Bay", "Grand_Turk", "Grenada", "Guadeloupe", "Guatemala", "Guayaquil", "Guyana", "Halifax", "Havana", "Hermosillo", "Indiana/Indianapolis", "Indiana/Knox", "Indiana/Marengo", "Indiana/Vevay", "Indianapolis", "Inuvik", "Iqaluit", "Jamaica", "Jujuy", "Juneau", "Kentucky/Louisville", "Kentucky/Monticello", "Knox_IN", "La_Paz", "Lima", "Los_Angeles", "Louisville", "Maceio", "Managua", "Manaus", "Martinique", "Mazatlan", "Mendoza", "Menominee", "Merida", "Mexico_City", "Miquelon", "Monterrey", "Montevideo", "Montreal", "Montserrat", "Nassau", "New_York", "Nipigon", "Nome", "Noronha", "North_Dakota/Center", "Panama", "Pangnirtung", "Paramaribo", "Phoenix", "Port_of_Spain", "Port-au-Prince", "Porto_Acre", "Porto_Velho", "Puerto_Rico", "Rainy_River", "Rankin_Inlet", "Recife", "Regina", "Rio_Branco", "Rosario", "Santiago", "Santo_Domingo", "Sao_Paulo", "Scoresbysund", "Shiprock", "St_Johns", "St_Kitts", "St_Lucia", "St_Thomas", "St_Vincent", "Swift_Current", "Tegucigalpa", "Thule", "Thunder_Bay", "Tijuana", "Toronto", "Tortola", "Vancouver", "Virgin", "Whitehorse", "Winnipeg", "Yakutat", "Yellowknife"};
     String[] asiaTimezoneList = {"Aden", "Almaty", "Amman", "Anadyr", "Aqtau", "Aqtobe", "Ashgabat", "Ashkhabad", "Baghdad", "Bahrain", "Baku", "Bangkok", "Beirut", "Bishkek", "Brunei", "Calcutta", "Choibalsan", "Chongqing", "Chungking", "Colombo", "Dacca", "Damascus", "Dhaka", "Dili", "Dubai", "Dushanbe", "Gaza", "Harbin", "Hong_Kong", "Hovd", "Irkutsk", "Istanbul", "Jakarta", "Jayapura", "Jerusalem", "Kabul", "Kamchatka", "Karachi", "Kashgar", "Katmandu", "Krasnoyarsk", "Kuala_Lumpur", "Kuching", "Kuwait", "Macao", "Macau", "Magadan", "Makassar", "Manila", "Muscat", "Nicosia", "Novosibirsk", "Omsk", "Oral", "Phnom_Penh", "Pontianak", "Pyongyang", "Qatar", "Qyzylorda", "Rangoon", "Riyadh", "Riyadh87", "Riyadh88", "Riyadh89", "Saigon", "Sakhalin", "Samarkand", "Seoul", "Shanghai", "Singapore", "Taipei", "Tashkent", "Tbilisi", "Tehran", "Tel_Aviv", "Thimbu", "Thimphu", "Tokyo", "Ujung_Pandang", "Ulaanbaatar", "Ulan_Bator", "Urumqi", "Vientiane", "Vladivostok", "Yakutsk", "Yekaterinburg", "Yerevan"};
@@ -62,9 +62,6 @@ public class TimezoneMenu {
     //Base components
     final JXDatePicker baseDatePicker;
     final JSpinner baseTimeSpinner;
-
-    //Parent Frame
-    Frame parentFrame;
 
 
     Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
@@ -83,7 +80,7 @@ public class TimezoneMenu {
 
         JMenu menu = new JMenu("Menu");
         menuBar = new JMenuBar();
-        standardListener = new standardListener();
+        simplifiedListener = new standardListener();
         allListener = new allListener();
         africaListener = new africaListener();
         americaListener = new americaListener();
@@ -94,9 +91,9 @@ public class TimezoneMenu {
         usListener = new usListener();
 
         //Main  Menu
-        JMenuItem saveItem = new JMenuItem("Save", KeyEvent.VK_Q); //Save function
-        JMenuItem restoreItem = new JMenuItem("Restore", KeyEvent.VK_R); //Restore function
-        JMenuItem menuItem = new JMenuItem("Quit", KeyEvent.VK_Q);
+        JMenuItem saveItem = new JMenuItem("Save"); //Save function
+        JMenuItem restoreItem = new JMenuItem("Restore"); //Restore function
+        JMenuItem menuItem = new JMenuItem("Quit");
         menuItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, InputEvent.CTRL_MASK));
         menuItem.addActionListener(new quitListener());
 
@@ -117,12 +114,12 @@ public class TimezoneMenu {
         JMenu regionMenu = new JMenu("Region");
         regionMenu.setMnemonic(KeyEvent.VK_R);
 
-        standardTimezone = new JRadioButtonMenuItem("Regular_Timezone");
-        standardTimezone.setMnemonic(KeyEvent.VK_S);
-        standardTimezone.addItemListener(standardListener);
-        timezoneMenu.add(standardTimezone);
+        simplifiedTimezone = new JRadioButtonMenuItem("Simplified");
+        simplifiedTimezone.setMnemonic(KeyEvent.VK_S);
+        simplifiedTimezone.addItemListener(simplifiedListener);
+        timezoneMenu.add(simplifiedTimezone);
 
-        allTimezone = new JRadioButtonMenuItem("All_Timezone");
+        allTimezone = new JRadioButtonMenuItem("All");
         allTimezone.setMnemonic(KeyEvent.VK_A);
         allTimezone.addItemListener(allListener);
         timezoneMenu.add(allTimezone);
@@ -166,7 +163,7 @@ public class TimezoneMenu {
         helpMenu.add(aboutItem);
 
         //Add menus to the menu bar
-        standardTimezone.setSelected(true);
+        simplifiedTimezone.setSelected(true);
         menuBar.add(menu);
         menuBar.add(timezoneMenu);
         menuBar.add(helpMenu);
@@ -206,12 +203,12 @@ public class TimezoneMenu {
         return menuBar;
     }
 
-    public String[] getStandardTimezoneList() {
-        return standardTimezoneList;
+    public String[] getSimplifiedTimezoneList() {
+        return simplifiedTimezoneList;
     }
 
     public void deselectItems() {
-        standardTimezone.setSelected(false);
+        simplifiedTimezone.setSelected(false);
         allTimezone.setSelected(false);
         africaTimezone.setSelected(false);
         americaTimezone.setSelected(false);
@@ -300,9 +297,6 @@ public class TimezoneMenu {
         }
     }
 
-
-
-
     public class aboutListener implements ActionListener {
 
 
@@ -389,8 +383,8 @@ public class TimezoneMenu {
     private void updateForStandard(){
         removeListeners();
         deselectItems();
-        standardTimezone.setSelected(true);
-        setTimezoneList(standardTimezoneList);
+        simplifiedTimezone.setSelected(true);
+        setTimezoneList(simplifiedTimezoneList);
         addListeners();
     }
 
@@ -515,7 +509,7 @@ public class TimezoneMenu {
 
     //We have to add and remove all listeners so that only the selected region will respond when clicked.
     public void removeListeners() {
-        standardTimezone.removeItemListener(standardListener);
+        simplifiedTimezone.removeItemListener(simplifiedListener);
         allTimezone.removeItemListener(allListener);
         africaTimezone.removeItemListener(africaListener);
         americaTimezone.removeItemListener(americaListener);
@@ -527,7 +521,7 @@ public class TimezoneMenu {
     }
 
     public void addListeners() {
-        standardTimezone.addItemListener(standardListener);
+        simplifiedTimezone.addItemListener(simplifiedListener);
         allTimezone.addItemListener(allListener);
         africaTimezone.addItemListener(africaListener);
         americaTimezone.addItemListener(americaListener);
@@ -540,8 +534,8 @@ public class TimezoneMenu {
 
     public JRadioButtonMenuItem getSelectedTimezone(){
 
-        if (standardTimezone.isSelected()){
-            return  standardTimezone;
+        if (simplifiedTimezone.isSelected()){
+            return simplifiedTimezone;
         }else if (allTimezone.isSelected()){
             return  allTimezone;
         }else if (africaTimezone.isSelected()){
@@ -559,7 +553,7 @@ public class TimezoneMenu {
         } else if (usTimezone.isSelected()){
             return usTimezone;
         } else {
-            return standardTimezone;
+            return simplifiedTimezone;
         }
 
     }
@@ -569,10 +563,10 @@ public class TimezoneMenu {
         Regions selectedTimezone = Regions.valueOf(timezone);
 
         switch (selectedTimezone){
-            case Regular_Timezone:
+            case Simplified:
                 updateForStandard();
                 break;
-            case All_Timezone:
+            case All:
                 updateForAll();
                 break;
             case Africa:
