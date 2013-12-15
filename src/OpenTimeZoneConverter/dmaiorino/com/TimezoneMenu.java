@@ -7,10 +7,10 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
 import java.io.*;
 import java.net.URISyntaxException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.prefs.Preferences;
 
@@ -117,38 +117,47 @@ public class TimezoneMenu {
         simplifiedTimezone = new JRadioButtonMenuItem("Simplified");
         simplifiedTimezone.setMnemonic(KeyEvent.VK_S);
         simplifiedTimezone.addItemListener(simplifiedListener);
+        simplifiedTimezone.setName("Simplified");
         timezoneMenu.add(simplifiedTimezone);
 
         allTimezone = new JRadioButtonMenuItem("All");
         allTimezone.setMnemonic(KeyEvent.VK_A);
         allTimezone.addItemListener(allListener);
+        allTimezone.setName("All");
         timezoneMenu.add(allTimezone);
 
         africaTimezone = new JRadioButtonMenuItem("Africa");
         africaTimezone.addItemListener(africaListener);
+        africaTimezone.setName("Africa");
         regionMenu.add(africaTimezone);
 
         americaTimezone = new JRadioButtonMenuItem("America");
         americaTimezone.addItemListener(americaListener);
+        americaTimezone.setName("America");
         regionMenu.add(americaTimezone);
 
         asiaTimezone = new JRadioButtonMenuItem("Asia");
         asiaTimezone.addItemListener(asiaListener);
+        asiaTimezone.setName("Asia");
         regionMenu.add(asiaTimezone);
 
         australiaTimezone = new JRadioButtonMenuItem("Australia");
         australiaTimezone.addItemListener(australiaListener);
+        australiaTimezone.setName("Australia");
         regionMenu.add(australiaTimezone);
 
         europeTimezone = new JRadioButtonMenuItem("Europe");
         europeTimezone.addItemListener(europeListener);
+        europeTimezone.setName("Europe");
         regionMenu.add(europeTimezone);
 
         pacificTimezone = new JRadioButtonMenuItem("Pacific");
         pacificTimezone.addItemListener(pacificListener);
+        pacificTimezone.setName("Pacific");
         regionMenu.add(pacificTimezone);
 
         usTimezone = new JRadioButtonMenuItem("US");
+        usTimezone.setName("US");
         usTimezone.addItemListener(usListener);
         regionMenu.add(usTimezone);
 
@@ -228,23 +237,13 @@ public class TimezoneMenu {
 
     private void savePanel(){
 
-        JRadioButtonMenuItem saveTZ = getSelectedTimezone();
-
+        //JRadioButtonMenuItem saveTZ = getSelectedTimezone();
+        preferences.put("selectedTimezone", getSelectedTimezone().getName());
         preferences.put("baseTimezoneBox", baseTimezoneBox.getSelectedItem().toString() );
         preferences.put("newTimezoneBox", newTimezoneBox.getSelectedItem().toString() );
+        preferences.put("baseTimeSpinner", baseTimeSpinner.getValue().toString());
+        preferences.put("baseDatePicker", baseDatePicker.getDate().toString());
 
-
-        try {
-
-            // Save the Timezone region menu item.
-            XMLEncoder xmlEncoderTzRegion = new XMLEncoder(new BufferedOutputStream(new FileOutputStream("save.xml")));
-            xmlEncoderTzRegion.writeObject(saveTZ);
-            xmlEncoderTzRegion.writeObject(baseDatePicker);
-            xmlEncoderTzRegion.writeObject(baseTimeSpinner);
-            xmlEncoderTzRegion.close();
-        }catch (IOException io){
-            System.err.println("FileNotFoundException: " + io.getMessage());
-        }
     }
 
     public class restoreListener implements ActionListener {
@@ -255,37 +254,19 @@ public class TimezoneMenu {
 
     private void restorePanel(){
 
-        JRadioButtonMenuItem restoreTZ;
-        JXDatePicker restoredBaseDatePicker;
-        JSpinner restoredBaseTimeSpinner;
+        //JRadioButtonMenuItem restoreTZ;
+        setSelectedTimezone(preferences.get("selectedTimezone", "UTC"));
 
-        try {
-            XMLDecoder xmlDecoder = new XMLDecoder(new BufferedInputStream(new FileInputStream("save.xml")));
-
-            //Get saved timezone
-            Object objectTZ = xmlDecoder.readObject();
-            restoreTZ = (JRadioButtonMenuItem)objectTZ;
-
-            //Get saved date
-            Object objectBaseDatePicker = xmlDecoder.readObject();
-            restoredBaseDatePicker = (JXDatePicker)objectBaseDatePicker;
-
-            //Get saved time
-            Object objectBaseTimeSpinner = xmlDecoder.readObject();
-            restoredBaseTimeSpinner = (JSpinner)objectBaseTimeSpinner;
-
-            //Set panel components with restored values.
-            baseTimeSpinner.setValue(restoredBaseTimeSpinner.getValue());
-            baseDatePicker.setDate(restoredBaseDatePicker.getDate());
-            setSelectedTimezone(restoreTZ.getText());
-
-            //OK, I'm done. Let's close this guy out.
-            xmlDecoder.close();
-        }catch (IOException io){
-            System.err.println("FileNotFoundException: " + io.getMessage());
+        SimpleDateFormat formatter = new SimpleDateFormat("EE MMM dd HH:mm:ss z yyyy");
+        try{
+            Date date = formatter.parse(preferences.get("baseTimeSpinner", "00:00"));
+            baseTimeSpinner.setValue(date);
+            date = formatter.parse(preferences.get("baseDatePicker", "00:00"));
+            baseDatePicker.setDate(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
         }
 
-        //Set selected here, so the convert action will take place
         baseTimezoneBox.setSelectedItem(preferences.get("baseTimezoneBox", "UTC"));
         newTimezoneBox.setSelectedItem(preferences.get("newTimezoneBox", "UTC"));
 
