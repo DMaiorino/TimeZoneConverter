@@ -1,4 +1,4 @@
-package OpenTimeZoneConverter.dmaiorino.com;
+package com.dmaiorino.OpenTimeZoneConverter;
 
 /**
  * Created with IntelliJ IDEA.

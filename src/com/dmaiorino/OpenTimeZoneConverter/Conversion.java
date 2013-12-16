@@ -1,4 +1,4 @@
-package OpenTimeZoneConverter.dmaiorino.com;
+package com.dmaiorino.OpenTimeZoneConverter;
 
 import java.util.Calendar;
 import java.util.TimeZone;
