@@ -1,7 +1,5 @@
 package OpenTimeZoneConverter.dmaiorino.com;
 
-import javax.swing.*;
-
 /**
  * Created with IntelliJ IDEA.
  * User: dave
@@ -20,10 +18,6 @@ public class TimeZoneConverter {
     public void startGUI(){
         frame = new Frame();
         frame.setVisible(true);
-    }
-
-    static public Frame getFrame(){
-        return frame;
     }
 
 }

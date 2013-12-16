@@ -51,7 +51,7 @@ public class Frame extends JFrame {
         this.baseTimeSpinner = panel.getBaseTimeSpinner();
 
         //Setup Menu
-        timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox, baseDatePicker, baseTimeSpinner);
+        timezoneMenuObject = new TimezoneMenu(baseTimezoneBox, newTimezoneBox, baseDatePicker, baseTimeSpinner, panel);
         for (String timezone : timezoneMenuObject.getSimplifiedTimezoneList()) {
             baseTimezoneBox.addItem(timezone);
             newTimezoneBox.addItem(timezone);
@@ -71,6 +71,7 @@ public class Frame extends JFrame {
 
         //Update the new time once (Currently set to UTC )
         panel.convertTime();
+        setSize(getMinimumSize());
 
 
     }

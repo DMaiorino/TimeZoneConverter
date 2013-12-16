@@ -25,7 +25,7 @@ public class TimezoneMenu {
 
 
     //Panel
-    Panel myPanel;
+    Panel panel;
 
     //Menu Components
     private JMenuBar menuBar;
@@ -66,9 +66,9 @@ public class TimezoneMenu {
 
     Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
 
-    public TimezoneMenu( JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner) {
+    public TimezoneMenu( JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner, Panel panel) {
 
-        //this.parentFrame = frame;
+        this.panel = panel;
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
         this.baseDatePicker = baseDatePicker;
@@ -115,13 +115,11 @@ public class TimezoneMenu {
         regionMenu.setMnemonic(KeyEvent.VK_R);
 
         simplifiedTimezone = new JRadioButtonMenuItem("Simplified");
-        simplifiedTimezone.setMnemonic(KeyEvent.VK_S);
         simplifiedTimezone.addItemListener(simplifiedListener);
         simplifiedTimezone.setName("Simplified");
         timezoneMenu.add(simplifiedTimezone);
 
         allTimezone = new JRadioButtonMenuItem("All");
-        allTimezone.setMnemonic(KeyEvent.VK_A);
         allTimezone.addItemListener(allListener);
         allTimezone.setName("All");
         timezoneMenu.add(allTimezone);
@@ -177,8 +175,6 @@ public class TimezoneMenu {
         menuBar.add(timezoneMenu);
         menuBar.add(helpMenu);
 
-        myPanel = new Panel();
-
     }
 
     public void setTimezoneList(String[] timezoneList) {
@@ -204,6 +200,7 @@ public class TimezoneMenu {
 
         //Turn converterAction back on.
         Panel.turnOnActiveSwitch();
+        panel.convertTime();
 
 
     }
@@ -330,7 +327,6 @@ public class TimezoneMenu {
             exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-
             //Add Components to the aboutPanel, then add the aboutPanel to the aboutDialog
             aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
             aboutPanel.add(aboutText);
@@ -364,6 +360,7 @@ public class TimezoneMenu {
     private void updateForStandard(){
         removeListeners();
         deselectItems();
+        Panel.setTimezoneheader("");
         simplifiedTimezone.setSelected(true);
         setTimezoneList(simplifiedTimezoneList);
         addListeners();
@@ -378,6 +375,7 @@ public class TimezoneMenu {
     private void updateForAll(){
         removeListeners();
         deselectItems();
+        Panel.setTimezoneheader("");
         allTimezone.setSelected(true);
         setTimezoneList(allTimezoneList);
         addListeners();
