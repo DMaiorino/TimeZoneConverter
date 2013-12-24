@@ -1,4 +1,4 @@
-package OpenTimeZoneConverter.dmaiorino.com;
+package com.dmaiorino.OpenTimeZoneConverter;
 
 import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
@@ -25,7 +25,7 @@ public class TimezoneMenu {
 
 
     //Panel
-    Panel myPanel;
+    com.dmaiorino.OpenTimeZoneConverter.Panel panel;
 
     //Menu Components
     private JMenuBar menuBar;
@@ -66,9 +66,9 @@ public class TimezoneMenu {
 
     Preferences preferences = Preferences.userNodeForPackage(TimezoneMenu.class);
 
-    public TimezoneMenu( JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner) {
+    public TimezoneMenu( JComboBox<String> baseTimezoneBox, JComboBox<String> newTimezoneBox, JXDatePicker baseDatePicker, JSpinner baseTimeSpinner, com.dmaiorino.OpenTimeZoneConverter.Panel panel) {
 
-        //this.parentFrame = frame;
+        this.panel = panel;
         this.baseTimezoneBox = baseTimezoneBox;
         this.newTimezoneBox = newTimezoneBox;
         this.baseDatePicker = baseDatePicker;
@@ -115,13 +115,11 @@ public class TimezoneMenu {
         regionMenu.setMnemonic(KeyEvent.VK_R);
 
         simplifiedTimezone = new JRadioButtonMenuItem("Simplified");
-        simplifiedTimezone.setMnemonic(KeyEvent.VK_S);
         simplifiedTimezone.addItemListener(simplifiedListener);
         simplifiedTimezone.setName("Simplified");
         timezoneMenu.add(simplifiedTimezone);
 
         allTimezone = new JRadioButtonMenuItem("All");
-        allTimezone.setMnemonic(KeyEvent.VK_A);
         allTimezone.addItemListener(allListener);
         allTimezone.setName("All");
         timezoneMenu.add(allTimezone);
@@ -177,8 +175,6 @@ public class TimezoneMenu {
         menuBar.add(timezoneMenu);
         menuBar.add(helpMenu);
 
-        myPanel = new Panel();
-
     }
 
     public void setTimezoneList(String[] timezoneList) {
@@ -186,7 +182,7 @@ public class TimezoneMenu {
         Arrays.sort(timezoneList);
 
         //We need to turn off the converterAction, so that we can update the timezone boxes
-        Panel.turnOffActiveSwitch();
+        com.dmaiorino.OpenTimeZoneConverter.Panel.turnOffActiveSwitch();
 
         baseTimezoneBox.removeAllItems();
         newTimezoneBox.removeAllItems();
@@ -203,7 +199,8 @@ public class TimezoneMenu {
         newTimezoneBox.setSelectedItem(preferences.get("newTimezoneBox", defaultTimezone));
 
         //Turn converterAction back on.
-        Panel.turnOnActiveSwitch();
+        com.dmaiorino.OpenTimeZoneConverter.Panel.turnOnActiveSwitch();
+        panel.convertTime();
 
 
     }
@@ -330,7 +327,6 @@ public class TimezoneMenu {
             exitButton.setAlignmentX(Component.CENTER_ALIGNMENT);
 
 
-
             //Add Components to the aboutPanel, then add the aboutPanel to the aboutDialog
             aboutPanel.setLayout(new BoxLayout(aboutPanel, BoxLayout.Y_AXIS));
             aboutPanel.add(aboutText);
@@ -364,6 +360,7 @@ public class TimezoneMenu {
     private void updateForStandard(){
         removeListeners();
         deselectItems();
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("");
         simplifiedTimezone.setSelected(true);
         setTimezoneList(simplifiedTimezoneList);
         addListeners();
@@ -378,6 +375,7 @@ public class TimezoneMenu {
     private void updateForAll(){
         removeListeners();
         deselectItems();
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("");
         allTimezone.setSelected(true);
         setTimezoneList(allTimezoneList);
         addListeners();
@@ -392,7 +390,7 @@ public class TimezoneMenu {
     private void updateForAfrica(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("Africa/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("Africa/");
         africaTimezone.setSelected(true);
         setTimezoneList(africaTimezoneList);
         addListeners();
@@ -407,7 +405,7 @@ public class TimezoneMenu {
     private void updateForAmerica(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("America/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("America/");
         americaTimezone.setSelected(true);
         setTimezoneList(americaTimezoneList);
         addListeners();
@@ -422,7 +420,7 @@ public class TimezoneMenu {
     private void updateForAsia(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("Asia/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("Asia/");
         asiaTimezone.setSelected(true);
         setTimezoneList(asiaTimezoneList);
         addListeners();
@@ -437,7 +435,7 @@ public class TimezoneMenu {
     private void updateForAustralia(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("Australia/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("Australia/");
         australiaTimezone.setSelected(true);
         setTimezoneList(australiaTimezoneList);
         addListeners();
@@ -452,7 +450,7 @@ public class TimezoneMenu {
     private void updateForEurope(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("Europe/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("Europe/");
         europeTimezone.setSelected(true);
         setTimezoneList(europeTimezoneList);
         addListeners();
@@ -467,7 +465,7 @@ public class TimezoneMenu {
     private void updateForPacific(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("Pacific/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("Pacific/");
         pacificTimezone.setSelected(true);
         setTimezoneList(pacificTimezoneList);
         addListeners();
@@ -482,7 +480,7 @@ public class TimezoneMenu {
     private void updateForUs(){
         removeListeners();
         deselectItems();
-        Panel.setTimezoneheader("US/");
+        com.dmaiorino.OpenTimeZoneConverter.Panel.setTimezoneheader("US/");
         usTimezone.setSelected(true);
         setTimezoneList(usTimezoneList);
         addListeners();
