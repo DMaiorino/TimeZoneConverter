@@ -15,9 +15,6 @@ import java.net.URL;
  */
 public class Frame extends JFrame {
 
-    //Window
-    JFrame frame;
-
     //Base Components
     JComboBox<String> baseTimezoneBox;
     JComboBox<String> newTimezoneBox;
@@ -35,10 +32,12 @@ public class Frame extends JFrame {
         setup();
     }
 
+
     public void setup(){
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new Dimension(400,200));
         setTitle("Open Time Zone Converter");
+        setResizable(false);
 
         //Create panel
         panel = new Panel();
